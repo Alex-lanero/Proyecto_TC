@@ -1,0 +1,43 @@
+<div class="page-container">
+    <div class="item-card">
+        <div class="card-actions">
+            <button class="delete-button" [hidden]="!item.available" (click)="removeItem()">
+                Delete
+            </button>
+        </div>
+        <img [src]="item.imageUrl" [alt]="item.name" class="item-image" >
+        
+        <div class="card-body">
+            <h2 class="item-title">{{item.name}}</h2>
+            <p class="item-sku">{{item.sku}}</p>
+            <p class="item-description">{{item.description}}</p>
+            <p class="item-price">
+                <strong>Price:</strong> {{item.price}} EUR
+            </p>
+            <div class="comments-section">
+                <h4>Comments</h4>
+                <div class="comments-label">
+                    @for (comment of comments; track $index){
+                        <div class="comment-row">
+                            <span class="comment-index">
+                                {{ $index + 1 }}.
+                            </span>
+                            <span class="comment-text">
+                                {{ comment }}
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+            @if (!item.available){
+                <div class="card-body">
+                    <span class="removed-message"> This item has been removed.</span>
+                </div>
+            }
+            <div class="price-editor">
+                <label for="price" class="price-label">New Price:</label>
+                <input id="price" type="number" class="price-input" [(ngModel)]="item.price">
+            </div>
+        </div>
+    </div>
+</div>
