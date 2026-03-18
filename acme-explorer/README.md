@@ -1,59 +1,153 @@
-# AcmeSupermarket
+🌍 Acme Explorer - Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+This project is a web application developed using Angular as part of the Master MIS-CLOUD Front-End Technologies course.
 
-## Development server
+The application allows users to explore trips using a dynamic backend (JSON Server) and includes a basic authentication system.
 
-To start a local development server, run:
+🚀 Features
 
-```bash
-ng serve
-```
+🔐 Authentication system (login/logout)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+🛡️ Route protection using Auth Guard
 
-## Code scaffolding
+🧠 Reactive state management using Angular Signals
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+🌐 REST API consumption using JSON Server
 
-```bash
-ng generate component component-name
-```
+🗺️ Dynamic trip listing from backend
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+🎯 Filter trips by difficulty (easy, medium, hard)
 
-```bash
-ng generate --help
-```
+🎨 Modern and responsive UI (cards, badges, hover effects)
 
-## Building
+🔄 Navigation using Angular Router
 
-To build the project run:
+👤 Test Credentials
 
-```bash
-ng build
-```
+To access the application, use:
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Email: test@acme.com
 
-## Running unit tests
+Password: 1234
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+🧭 Application Flow
 
-```bash
-ng test
-```
+The application starts on the login page.
 
-## Running end-to-end tests
+The user enters valid credentials.
 
-For end-to-end (e2e) testing, run:
+After login, the user is redirected to the home page.
 
-```bash
-ng e2e
-```
+From there, the user can navigate to:
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+🏠 Home
 
-## Additional Resources
+🧳 Trips
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The trips page:
+
+Fetches data from JSON Server
+
+Displays trips in a card layout
+
+Allows filtering by difficulty
+
+Allows cancelling trips (UI state)
+
+The user can logout at any time from the header.
+
+If not authenticated:
+
+Access to /trips is blocked
+
+User is redirected to /login
+
+🔒 Route Protection
+
+The route /trips is protected using an Auth Guard
+
+Only authenticated users can access it
+
+Unauthorized users are redirected to /login
+
+🌐 Backend (JSON Server)
+
+This project uses JSON Server as a mock backend.
+
+▶️ Run JSON Server
+npx json-server --watch db.json --port 3000
+
+API endpoint:
+
+http://localhost:3000/trips
+🧩 Project Structure
+src/app/
+│
+├── core/
+│   ├── services/
+│   │   ├── auth.service.ts
+│   │   └── trip.service.ts
+│   └── guards/
+│       └── auth.guard.ts
+│
+├── features/
+│   ├── auth/
+│   ├── home/
+│   └── trips/
+│       └── trip-display/
+│
+├── shared/
+│   ├── header/
+│   └── footer/
+│
+└── app.routes.ts
+🛠️ Technologies Used
+
+Angular (Standalone Components)
+
+TypeScript
+
+Angular Signals
+
+Angular Router
+
+JSON Server (mock backend)
+
+HTML / SCSS
+
+▶️ How to Run the Project
+1. Install dependencies
+npm install
+2. Run JSON Server (IMPORTANT)
+npx json-server --watch db.json --port 3000
+3. Run Angular app
+npm start
+4. Open in browser
+http://localhost:4200
+⚠️ Notes
+
+Authentication is simulated (mock) (no Firebase integration)
+
+Credentials are hardcoded for demonstration purposes
+
+JSON Server is used as a fake backend API
+
+Trips are dynamically loaded from /trips
+
+📦 Delivery Note
+
+The node_modules folder has been removed to reduce project size
+
+To run the project, install dependencies using npm install
+
+🏁 Final Result
+
+This project demonstrates:
+
+Frontend architecture using Angular
+
+Authentication and route protection
+
+API integration with a mock backend
+
+Clean UI and user experience

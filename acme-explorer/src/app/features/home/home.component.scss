@@ -1,0 +1,84 @@
+.home {
+  display: flex;
+  flex-direction: column;
+}
+
+/* HERO */
+.hero {
+  padding: 100px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+.hero-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.hero-card h1 {
+  margin-bottom: 10px;
+}
+
+.hero-card p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+/* FEATURES */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 50px;
+  background: #f5f5f5;
+}
+
+.feature {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 250px;
+  text-align: center;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* CTA */
+.cta {
+  text-align: center;
+  padding: 40px;
+}
+
+/* BOTONES */
+.primary-btn {
+  background: #4facfe;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #3a8dde;
+}
+
+.secondary-btn {
+  background: #00c853;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.secondary-btn:hover {
+  background: #00a844;
+}

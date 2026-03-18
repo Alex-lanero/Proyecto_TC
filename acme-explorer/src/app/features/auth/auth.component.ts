@@ -32,7 +32,7 @@ export class AuthComponent {
 
     if (success) {
       this.errorMessage = '';
-      this.router.navigate(['/trips']);
+      this.router.navigate(['/home']);
     } else {
       this.errorMessage = 'Invalid credentials';
     }

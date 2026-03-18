@@ -1,0 +1,18 @@
+<header class="header">
+
+  <div class="logo">🌍 Acme Explorer</div>
+
+  <nav class="nav">
+
+    <a routerLink="/home">Home</a>
+    <a routerLink="/trips">Trips</a>
+
+    @if (!authService.isLogged()) {
+      <a routerLink="/login">Login</a>
+    } @else {
+      <button (click)="logout()">Logout</button>
+    }
+
+  </nav>
+
+</header>

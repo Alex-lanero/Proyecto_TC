@@ -1,50 +1,50 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Trip } from '../trip.model';
 import { AuthService } from '../../../core/services/auth.service';
+import { TripService } from '../../../core/services/trip.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-trip-display',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './trip-display.component.html',
   styleUrl: './trip-display.component.scss',
 })
-export class TripDisplay {
+export class TripDisplay implements OnInit {
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  loading = true;
+  selectedDifficulty = 'all';
 
-  trip: Trip = {
-    id: '1',
-    version: 0,
-    ticker: '250318-ABCD',
-    title: 'Mountain Adventure',
-    description: 'Explore the mountains with expert guides.',
-    price: 120,
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private tripService = inject(TripService);
 
-    city: 'Granada',
-    country: 'Spain',
+  trips = signal<Trip[]>([]);
 
-    difficulty: 'medium',
-
-    maxParticipants: 10,
-    startDate: '2025-06-01',
-    endDate: '2025-06-05',
-
-    pictures: ['/images/mountain.jpg'],
-    cancelled: false
-  };
-
-  cancelTrip() {
-    this.trip.cancelled = true;
+  ngOnInit() {
+    this.tripService.getTrips().subscribe(data => {
+      this.trips.set(
+        data.map(trip => ({ ...trip, cancelled: false }))
+      );
+      this.loading = false;
+    });
   }
 
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/']); // vuelve al login
+  cancelTrip(trip: Trip) {
+    trip.cancelled = true;
   }
+
+  filteredTrips() {
+    if (this.selectedDifficulty === 'all') {
+      return this.trips();
+    }
+
+    return this.trips().filter(
+      t => t.difficulty === this.selectedDifficulty
+    );
+  }
+
 }
