@@ -1,0 +1,46 @@
+<div class="trip-page">
+
+  <!-- BOTÓN LOGOUT -->
+  <button class="logout-button" (click)="logout()">
+    Logout
+  </button>
+
+  <div class="trip-card">
+
+    <div class="trip-image-container">
+      @if (trip.pictures?.length) {
+        <img [src]="trip.pictures?.[0]" class="trip-image">
+      }
+    </div>
+
+    <div class="trip-body">
+
+      <h2 class="trip-title">{{trip.title}}</h2>
+      <p class="trip-description">{{trip.description}}</p>
+
+      <div class="trip-info">
+        <p><strong>Ticker:</strong> {{trip.ticker}}</p>
+        <p><strong>Location:</strong> {{trip.city}}, {{trip.country}}</p>
+        <p><strong>Difficulty:</strong> {{trip.difficulty}}</p>
+      </div>
+
+      <div class="trip-meta">
+        <p class="trip-price">{{trip.price}} €</p>
+        <p class="trip-dates">{{trip.startDate}} → {{trip.endDate}}</p>
+      </div>
+
+      <button class="trip-button" (click)="cancelTrip()" [hidden]="trip.cancelled">
+        Cancel trip
+      </button>
+
+      @if (trip.cancelled) {
+        <div class="trip-cancelled">
+          This trip has been cancelled
+        </div>
+      }
+
+    </div>
+
+  </div>
+
+</div>

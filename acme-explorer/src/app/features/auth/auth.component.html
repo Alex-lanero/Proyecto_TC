@@ -1,0 +1,27 @@
+<div class="auth-wrapper">
+
+  <div class="auth-card">
+
+    <h2>Login</h2>
+
+    <input type="text"
+           [(ngModel)]="email"
+           (input)="errorMessage=''"
+           placeholder="Email">
+
+    <input type="password"
+           [(ngModel)]="password"
+           (input)="errorMessage=''"
+           placeholder="Password">
+
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <button (click)="login()">Login</button>
+
+  </div>
+
+</div>
