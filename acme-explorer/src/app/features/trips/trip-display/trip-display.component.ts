@@ -5,11 +5,12 @@ import { Trip } from '../trip.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { TripService } from '../../../core/services/trip.service';
 import { CommonModule } from '@angular/common';
+import { TripCardComponent } from '../trip-card/trip-card.component';
 
 @Component({
   selector: 'app-trip-display',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, TripCardComponent],
   templateUrl: './trip-display.component.html',
   styleUrl: './trip-display.component.scss',
 })
@@ -46,6 +47,8 @@ export class TripDisplay implements OnInit {
   ngOnInit() {
     const role = this.authService.getRole();
     this.tripService.getTripsByRole(role!).subscribe(data => {
+    console.log('ROLE:', role);
+    console.log('TRIPS:', data);
       this.trips.set(
         data.map(trip => ({ ...trip, cancelled: false }))
       );
