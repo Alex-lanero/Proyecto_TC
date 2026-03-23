@@ -13,8 +13,11 @@
       "maxParticipants": 10,
       "startDate": "2025-06-01",
       "endDate": "2025-06-05",
-      "pictures": ["/images/mountain.jpg"],
-      "cancelled": false
+      "pictures": [
+        "/images/mountain.jpg"
+      ],
+      "cancelled": false,
+      "role": "user"
     },
     {
       "id": "2",
@@ -29,8 +32,11 @@
       "maxParticipants": 20,
       "startDate": "2025-07-10",
       "endDate": "2025-07-15",
-      "pictures": ["/images/beach.jpg"],
-      "cancelled": false
+      "pictures": [
+        "/images/beach.jpg"
+      ],
+      "cancelled": false,
+      "role": "user"
     },
     {
       "id": "3",
@@ -45,8 +51,11 @@
       "maxParticipants": 15,
       "startDate": "2025-08-01",
       "endDate": "2025-08-04",
-      "pictures": ["/images/city.jpg"],
-      "cancelled": false
+      "pictures": [
+        "/images/city.jpg"
+      ],
+      "cancelled": false,
+      "role": "user"
     },
     {
       "id": "4",
@@ -61,8 +70,11 @@
       "maxParticipants": 8,
       "startDate": "2025-09-10",
       "endDate": "2025-09-20",
-      "pictures": ["/images/safari.jpg"],
-      "cancelled": false
+      "pictures": [
+        "/images/safari.jpg"
+      ],
+      "cancelled": false,
+      "role": "user"
     },
     {
       "id": "5",
@@ -77,8 +89,11 @@
       "maxParticipants": 12,
       "startDate": "2025-12-01",
       "endDate": "2025-12-07",
-      "pictures": ["/images/snow.jpg"],
-      "cancelled": false
+      "pictures": [
+        "/images/snow.jpg"
+      ],
+      "cancelled": false,
+      "role": "admin"
     }
   ]
 }

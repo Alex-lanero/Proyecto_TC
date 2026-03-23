@@ -15,4 +15,13 @@ export class TripService {
   getTrips(): Observable<Trip[]> {
     return this.http.get<Trip[]>(this.apiUrl);
   }
+
+  getTripsByRole(role: string) {
+    return this.http.get<Trip[]>(`http://localhost:3000/trips?role=${role}`);
+  }
+
+  createTrip(trip: Trip) {
+    return this.http.post('http://localhost:3000/trips', trip);
+  }
+
 }

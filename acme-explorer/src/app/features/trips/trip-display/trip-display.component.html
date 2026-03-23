@@ -11,6 +11,87 @@
   <button (click)="selectedDifficulty = 'hard'">Hard</button>
 
 </div>
+@if (authService.getRole() === 'admin') {
+  <div class="create-container">
+    <button class="create-button" (click)="showForm = !showForm">
+      + Create Trip
+    </button>
+  </div>
+}
+@if (showForm) {
+  <div class="create-form">
+
+    <h2>Create new trip</h2>
+
+    <!-- BASIC INFO -->
+    <div class="form-section">
+      <h3>Basic information</h3>
+
+      <label>Title</label>
+      <input [(ngModel)]="newTrip.title">
+
+      <label>Description</label>
+      <input [(ngModel)]="newTrip.description">
+
+      <label>Price (€)</label>
+      <input type="number" [(ngModel)]="newTrip.price">
+    </div>
+
+    <!-- LOCATION -->
+    <div class="form-section">
+      <h3>Location</h3>
+
+      <label>City</label>
+      <input [(ngModel)]="newTrip.city">
+
+      <label>Country</label>
+      <input [(ngModel)]="newTrip.country">
+    </div>
+
+    <!-- DETAILS -->
+    <div class="form-section">
+      <h3>Details</h3>
+
+      <label>Difficulty</label>
+      <select [(ngModel)]="newTrip.difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+
+      <label>Max participants</label>
+      <input type="number" [(ngModel)]="newTrip.maxParticipants">
+    </div>
+
+    <!-- DATES -->
+    <div class="form-section">
+      <h3>Dates</h3>
+
+      <label>Start date</label>
+      <input type="date" [(ngModel)]="newTrip.startDate">
+
+      <label>End date</label>
+      <input type="date" [(ngModel)]="newTrip.endDate">
+    </div>
+
+    <!-- EXTRA -->
+    <div class="form-section">
+      <h3>Extra</h3>
+
+      <label>Image URL</label>
+      <input [(ngModel)]="newTrip.pictures[0]">
+
+      <label>Visibility</label>
+      <select [(ngModel)]="newTrip.role">
+        <option value="user">User trip</option>
+        <option value="admin">Admin trip</option>
+      </select>
+    </div>
+
+    <button class="save-button" (click)="createTrip()">Save trip</button>
+
+  </div>
+}
 <div class="trip-page">
 
   @for (trip of filteredTrips(); track trip.id) {

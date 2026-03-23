@@ -21,4 +21,6 @@ export interface Trip extends Entity {
 
   cancelled?: boolean;
   cancellationReason?: string;
+
+  role: 'user' | 'admin';
 }
