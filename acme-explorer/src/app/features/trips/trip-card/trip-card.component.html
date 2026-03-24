@@ -12,12 +12,17 @@
         <p class="trip-description">{{trip.description}}</p>
 
         <div class="trip-info">
-          <p><strong>Ticker:</strong> {{trip.ticker}}</p>
-          <p><strong>Location:</strong> {{trip.city}}, {{trip.country}}</p>
+          <p><strong>{{ 'Ticket' | translate }}:</strong> {{trip.ticker}}</p>
+          <p><strong>{{ 'Location' | translate }}:</strong> {{trip.city}}, {{trip.country}}</p>
           <p>
-            <strong>Difficulty:</strong>
-            <span class="badge" [ngClass]="trip.difficulty">
-                {{ trip.difficulty }}
+            <strong>{{ 'Difficulty' | translate }}:</strong>
+            <span 
+              class="difficulty-badge"
+              [style.background]="(trip.difficulty | difficulty).color">
+
+              {{ (trip.difficulty | difficulty).icon }}
+              {{ trip.difficulty | translate }}
+
             </span>
            </p>
         </div>
@@ -32,7 +37,7 @@
           (click)="onCancel()" 
           [hidden]="trip.cancelled"
         >
-          Cancel trip
+          {{ 'Cancel trip' | translate }}
         </button>
 
         @if (trip.cancelled) {

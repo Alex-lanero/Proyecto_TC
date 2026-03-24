@@ -4,6 +4,21 @@
 
   <nav class="nav">
 
+    <div class="lang-buttons">
+      <button 
+        (click)="changeLang('es')"
+        [class.active]="TranslatePipe.currentLang === 'es'"
+      >
+        ES
+      </button>
+
+      <button 
+        (click)="changeLang('en')"
+        [class.active]="TranslatePipe.currentLang === 'en'"
+      >
+        EN
+      </button>
+    </div>
     <a routerLink="/home">Home</a>
     <a routerLink="/trips">Trips</a>
 

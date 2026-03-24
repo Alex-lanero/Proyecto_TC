@@ -6,11 +6,12 @@ import { AuthService } from '../../../core/services/auth.service';
 import { TripService } from '../../../core/services/trip.service';
 import { CommonModule } from '@angular/common';
 import { TripCardComponent } from '../trip-card/trip-card.component';
+import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-trip-display',
   standalone: true,
-  imports: [FormsModule, CommonModule, TripCardComponent],
+  imports: [FormsModule, CommonModule, TripCardComponent, TranslatePipe],
   templateUrl: './trip-display.component.html',
   styleUrl: './trip-display.component.scss',
 })

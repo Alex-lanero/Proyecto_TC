@@ -2,19 +2,19 @@
 @if (loading) {
   <div class="loader">Loading trips...</div>
 }
-    <h1 class="trip-title-page">Available Trips</h1>
+    <h1 class="trip-title-page">{{ 'Available Trips' | translate }}</h1>
 <div class="filters">
 
-  <button (click)="selectedDifficulty = 'all'">All</button>
-  <button (click)="selectedDifficulty = 'easy'">Easy</button>
-  <button (click)="selectedDifficulty = 'medium'">Medium</button>
-  <button (click)="selectedDifficulty = 'hard'">Hard</button>
+  <button (click)="selectedDifficulty = 'all'">{{ 'all' | translate }}</button>
+  <button (click)="selectedDifficulty = 'easy'">{{ 'easy' | translate }}</button>
+  <button (click)="selectedDifficulty = 'medium'">{{ 'medium' | translate }}</button>
+  <button (click)="selectedDifficulty = 'hard'">{{ 'hard' | translate }}</button>
 
 </div>
 @if (authService.getRole() === 'admin') {
   <div class="create-container">
     <button class="create-button" (click)="showForm = !showForm">
-      + Create Trip
+      + {{ 'Create Trip' | translate }}
     </button>
   </div>
 }

@@ -44,3 +44,29 @@
 .nav button:hover {
   background: #e60000;
 }
+
+.lang-buttons {
+  display: flex;
+  gap: 8px;
+  margin-right: 15px;
+}
+
+.lang-buttons button {
+  background: rgba(255,255,255,0.3);
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  transition: 0.2s;
+}
+
+.lang-buttons button:hover {
+  background: rgba(255,255,255,0.6);
+}
+
+.lang-buttons button.active {
+  background: white;
+  color: #2196f3;
+  font-weight: bold;
+}

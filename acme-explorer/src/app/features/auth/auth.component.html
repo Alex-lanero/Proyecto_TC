@@ -2,17 +2,17 @@
   
   <div class="auth-card">
 
-    <h2>Login</h2>
+    <h2>{{ 'Login' | translate }}</h2>
 
     <input type="text"
            [(ngModel)]="email"
            (input)="errorMessage=''"
-           placeholder="Email">
+           placeholder="{{ 'Email' | translate }}">
 
     <input type="password"
            [(ngModel)]="password"
            (input)="errorMessage=''"
-           placeholder="Password">
+           placeholder="{{ 'Password' | translate }}">
 
     @if (errorMessage) {
       <div class="error-message">
@@ -20,7 +20,7 @@
       </div>
     }
 
-    <button (click)="login()">Login</button>
+    <button (click)="login()">{{ 'Login' | translate }}</button>
 
   </div>
 
