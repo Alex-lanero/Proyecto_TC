@@ -2,83 +2,100 @@
 
 This project is a web application developed using Angular as part of the Master MIS-CLOUD Front-End Technologies course.
 
-The application allows users to explore trips using a dynamic backend (JSON Server) and includes a basic authentication system.
+The application allows users to explore trips using a dynamic backend (JSON Server) and includes authentication, role-based behavior, and UI enhancements.
 
 🚀 Features
-
-🔐 Authentication system (login/logout)
-
-🛡️ Route protection using Auth Guard
-
-🧠 Reactive state management using Angular Signals
-
-🌐 REST API consumption using JSON Server
-
-🗺️ Dynamic trip listing from backend
-
-🎯 Filter trips by difficulty (easy, medium, hard)
-
-🎨 Modern and responsive UI (cards, badges, hover effects)
-
-🔄 Navigation using Angular Router
-
+🔐 Authentication & Security
+Login / Logout system
+Route protection using Auth Guard
+Role-based behavior (user / admin)
+🧠 State & Architecture
+Reactive state management using Angular Signals
+Component-based architecture (parent + child components)
+Clean separation: core / features / shared
+🌐 Backend Integration
+REST API consumption using JSON Server
+Dynamic data loading from backend
+Create new trips (admin only)
+🧳 Trips Functionality
+Dynamic trip listing from backend
+Filter trips by difficulty (easy, medium, hard)
+Cancel trips (UI state)
+Role-based filtering:
+Users see user trips + admin trips
+Admin sees all trips
+🧩 Components
+TripDisplayComponent (parent)
+TripCardComponent (child)
+Displays trip summary
+Expandable card → shows additional information on click
+🎨 UI / UX Enhancements
+Responsive card layout
+Hover effects and animations
+Expandable cards (details on click)
+Styled difficulty badges (easy / medium / hard)
+Improved form UI for trip creation
+🌍 Internationalization (i18n)
+Custom Translate Pipe
+Language switcher (ES / EN)
+Real-time UI updates without reload
+Language persistence using localStorage
+🔧 Pipes
+Built-in pipe:
+date pipe used in footer
+Custom pipes:
+translate pipe (UI translations)
+difficulty styling (badges/colors)
 👤 Test Credentials
 
-To access the application, use:
+To access the application:
 
+Normal user
 Email: test@acme.com
+Password: 1234
 
+Admin user
+Email: admin@acme.com
 Password: 1234
 
 🧭 Application Flow
-
 The application starts on the login page.
-
 The user enters valid credentials.
-
 After login, the user is redirected to the home page.
-
 From there, the user can navigate to:
-
 🏠 Home
-
 🧳 Trips
-
-The trips page:
-
+Trips Page
 Fetches data from JSON Server
+Displays trips using reusable card component
+Allows:
+Filtering by difficulty
+Cancelling trips
+Expanding cards to view more details
+Admin Features
 
-Displays trips in a card layout
+If the logged user is admin:
 
-Allows filtering by difficulty
+Can create new trips via form
+Can choose visibility:
+user trip
+admin trip
+Access Control
 
-Allows cancelling trips (UI state)
-
-The user can logout at any time from the header.
-
-If not authenticated:
+If the user is not authenticated:
 
 Access to /trips is blocked
-
-User is redirected to /login
-
+Redirected to /login
 🔒 Route Protection
-
-The route /trips is protected using an Auth Guard
-
+/trips is protected using an Auth Guard
 Only authenticated users can access it
-
-Unauthorized users are redirected to /login
-
 🌐 Backend (JSON Server)
 
 This project uses JSON Server as a mock backend.
 
 ▶️ Run JSON Server
 npx json-server --watch db.json --port 3000
-
-API endpoint:
-
+API endpoint
 http://localhost:3000/trips
 🧩 Project Structure
 src/app/
@@ -94,27 +111,24 @@ src/app/
 │   ├── auth/
 │   ├── home/
 │   └── trips/
-│       └── trip-display/
+│       ├── trip-display/
+│       └── trip-card/   ← child component
 │
 ├── shared/
 │   ├── header/
-│   └── footer/
+│   ├── footer/
+│   └── pipes/
+│       ├── translate.pipe.ts
+│       └── difficulty.pipe.ts
 │
 └── app.routes.ts
 🛠️ Technologies Used
-
 Angular (Standalone Components)
-
 TypeScript
-
 Angular Signals
-
 Angular Router
-
 JSON Server (mock backend)
-
 HTML / SCSS
-
 ▶️ How to Run the Project
 1. Install dependencies
 npm install
@@ -125,29 +139,32 @@ npm start
 4. Open in browser
 http://localhost:4200
 ⚠️ Notes
-
-Authentication is simulated (mock) (no Firebase integration)
-
-Credentials are hardcoded for demonstration purposes
-
-JSON Server is used as a fake backend API
-
+Authentication is simulated (no Firebase)
+Credentials are hardcoded
+JSON Server acts as a mock backend
 Trips are dynamically loaded from /trips
-
+Language selection is stored in localStorage
 📦 Delivery Note
 
-The node_modules folder has been removed to reduce project size
+Before submitting:
 
-To run the project, install dependencies using npm install
+Remove:
 
+node_modules/
+.angular/
+dist/
+
+Install dependencies using:
+
+npm install
 🏁 Final Result
 
 This project demonstrates:
 
-Frontend architecture using Angular
-
+Angular architecture with standalone components
 Authentication and route protection
-
-API integration with a mock backend
-
-Clean UI and user experience
+Backend integration using JSON Server
+Reusable components (parent/child)
+Custom pipes and built-in pipes
+Internationalization (ES/EN)
+Interactive and modern UI
