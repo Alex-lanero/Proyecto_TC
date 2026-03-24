@@ -1,4 +1,4 @@
-    <div class="trip-card">
+    <div class="trip-card" (click)="toggle()">
 
       <div class="trip-image-container">
         @if (trip.pictures?.length) {
@@ -9,7 +9,6 @@
       <div class="trip-body">
 
         <h2 class="trip-title">{{trip.title}}</h2>
-        <p class="trip-description">{{trip.description}}</p>
 
         <div class="trip-info">
           <p><strong>{{ 'Ticket' | translate }}:</strong> {{trip.ticker}}</p>
@@ -34,7 +33,7 @@
 
         <button 
           class="trip-button" 
-          (click)="onCancel()" 
+          (click)="onCancel(); $event.stopPropagation()" 
           [hidden]="trip.cancelled"
         >
           {{ 'Cancel trip' | translate }}
@@ -42,10 +41,18 @@
 
         @if (trip.cancelled) {
           <div class="trip-cancelled">
-            This trip has been cancelled
+            {{ 'This trip has been cancelled' | translate }}
           </div>
         }
 
       </div>
+
+      @if (expanded) {
+        <div class="trip-extra">
+          <p><strong>{{ 'Max participants' | translate }}:</strong> {{ trip.maxParticipants }}</p>
+          <p><strong>{{ 'Country' | translate }}:</strong> {{ trip.country }}</p>
+          <p><strong>{{ 'Full description' | translate }}:</strong> {{ trip.description }}</p>
+        </div>
+      }
 
     </div>

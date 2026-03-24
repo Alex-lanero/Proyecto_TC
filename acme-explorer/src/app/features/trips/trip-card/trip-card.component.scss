@@ -98,3 +98,27 @@
   transform: scale(1.1);
 }
 
+.trip-card {
+  cursor: pointer;
+}
+
+.trip-extra {
+  padding: 10px 15px;
+  border-top: 1px solid #eee;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.trip-card:hover {
+  transform: translateY(-6px) scale(1.02);
+}

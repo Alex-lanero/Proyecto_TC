@@ -40,7 +40,11 @@ export class TranslatePipe implements PipeTransform {
       'Enjoy safe adventures with expert guides': 'Disfruta de aventuras seguras con guías expertos',
       'Ticket': 'Boleto',
       'Location': 'Ubicación',
-      'Dificulty': 'Dificultad'
+      'Dificulty': 'Dificultad',
+      'Max participants': 'Máximo de participantes',
+      'Country': 'País',
+      'Full description': 'Descripción completa',
+      'This trip has been cancelled': 'Este viaje ha sido cancelado'
     },
     en: {
       easy: 'Easy',
@@ -73,7 +77,11 @@ export class TranslatePipe implements PipeTransform {
       'Enjoy safe adventures with expert guides': 'Enjoy safe adventures with expert guides',
       'Ticket': 'Ticket',
       'Location': 'Location',
-      'Dificulty': 'Difficulty'
+      'Dificulty': 'Difficulty',
+      'Max participants': 'Max participants',
+      'Country': 'Country',
+      'Full description': 'Full description',
+      'This trip has been cancelled': 'This trip has been cancelled'
     }
   };
 

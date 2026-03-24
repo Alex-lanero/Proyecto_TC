@@ -16,7 +16,13 @@ export class TripCardComponent {
   @Input() trip!: Trip;
   @Output() cancel = new EventEmitter<Trip>();
 
+  expanded = false;
+
   onCancel() {
     this.cancel.emit(this.trip);
+  }
+
+  toggle() {
+    this.expanded = !this.expanded;
   }
 }
