@@ -10,11 +10,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let application of applications">
-      <td>
-        <a [routerLink]="['/manager-applications', application.tripId]">
-          {{ application.tripId }}
-        </a>
-      </td>
+      <td>{{ application.tripId }}</td>
       <td>{{ application.status }}</td>
       <td>{{ application.comments }}</td>
       <td>{{ application.createdAt | date }}</td>

@@ -1,4 +1,5 @@
 import { Entity } from "../../shared/entity.model";
+import { Stage } from "./stage.model";
 
 export interface Trip extends Entity {
   ticker: string;
@@ -23,4 +24,5 @@ export interface Trip extends Entity {
   cancellationReason?: string;
 
   role: 'user' | 'admin';
+  stages: Stage[];
 }

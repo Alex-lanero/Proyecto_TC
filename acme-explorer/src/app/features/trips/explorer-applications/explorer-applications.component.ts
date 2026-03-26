@@ -4,13 +4,12 @@ import { ApplicationService } from '../../../core/services/application.service';
 import { Application } from '../application.model';  // Ensure you have this model
 import { DatePipe } from '@angular/common'; // For date formatting
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-explorer-applications',
   templateUrl: './explorer-applications.component.html',
   styleUrls: ['./explorer-applications.component.scss'],
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   providers: [DatePipe]  // Include DatePipe in providers
 })
 export class ExplorerApplicationsComponent implements OnInit {

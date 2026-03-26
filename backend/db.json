@@ -101,10 +101,25 @@
       "id": "1",
       "tripId": "1",
       "explorerId": "test@acme.com",
-      "status": "PENDING",
+      "status": "REJECTED",
+      "comments": "Looking forward to this trip!",
+      "createdAt": "2026-03-18T00:00:00Z"
+    },
+    {
+      "id": "2",
+      "tripId": "2",
+      "explorerId": "test@acme.com",
+      "status": "REJECTED",
+      "comments": "Looking forward to this trip!",
+      "createdAt": "2026-03-18T00:00:00Z"
+    },
+    {
+      "id": "3",
+      "tripId": "3",
+      "explorerId": "test@acme.com",
+      "status": "REJECTED",
       "comments": "Looking forward to this trip!",
       "createdAt": "2026-03-18T00:00:00Z"
     }
   ]
 }
-

@@ -88,6 +88,15 @@
       </select>
     </div>
 
+      <div *ngFor="let stage of newTrip.stages; let i = index">
+        <h4>Stage {{ i + 1 }}</h4>
+        <input [(ngModel)]="stage.title" placeholder="Stage Title">
+        <input [(ngModel)]="stage.description" placeholder="Stage Description">
+        <input type="number" [(ngModel)]="stage.price" placeholder="Stage Price">
+      </div>
+
+      <button (click)="addStage()">Add Stage</button> 
+
     <button class="save-button" (click)="createTrip()">Save trip</button>
 
   </div>

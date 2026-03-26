@@ -6,7 +6,7 @@ import { Injectable, signal } from '@angular/core';
 export class AuthService {
 
   currentUser = signal<string | null>(null);
-  userRole = signal<'user' | 'admin' | null>(null);
+  userRole = signal<'user' | 'admin' | 'manager' | null>(null);
 
   login(email: string, password: string): boolean {
 
@@ -22,6 +22,12 @@ export class AuthService {
     if (email === 'admin@acme.com' && password === '1234') {
       this.currentUser.set(email);
       this.userRole.set('admin');
+      return true;
+    }
+
+    if(email === 'manager@acme.com'  && password === '1234'){
+      this.currentUser.set(email);
+      this.userRole.set('manager');
       return true;
     }
 

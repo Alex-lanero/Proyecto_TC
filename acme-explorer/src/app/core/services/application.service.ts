@@ -32,4 +32,8 @@ export class ApplicationService {
   updateApplicationStatus(id: string, status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'DUE'): Observable<Application> {
     return this.http.patch<Application>(`${this.apiUrl}/${id}`, { status });
   }
+
+  getAllApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(this.apiUrl);
+  }
 }

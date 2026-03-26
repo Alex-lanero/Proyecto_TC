@@ -7,6 +7,7 @@ import { TripService } from '../../../core/services/trip.service';
 import { CommonModule } from '@angular/common';
 import { TripCardComponent } from '../trip-card/trip-card.component';
 import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
+import { Stage } from '../stage.model';
 
 @Component({
   selector: 'app-trip-display',
@@ -36,7 +37,8 @@ export class TripDisplay implements OnInit {
     endDate: '',
     pictures: [''],
     cancelled: false,
-    role: 'user'
+    role: 'user',
+    stages: [] as Stage[], 
   };
 
   public authService = inject(AuthService);
@@ -48,8 +50,6 @@ export class TripDisplay implements OnInit {
   ngOnInit() {
     const role = this.authService.getRole();
     this.tripService.getTripsByRole(role!).subscribe(data => {
-    console.log('ROLE:', role);
-    console.log('TRIPS:', data);
       this.trips.set(
         data.map(trip => ({ ...trip, cancelled: false }))
       );
@@ -73,6 +73,15 @@ export class TripDisplay implements OnInit {
         trip.role === role || trip.role === 'admin';
 
       return matchDifficulty && matchRole;
+    });
+  }
+
+  addStage() {
+    this.newTrip.stages.push({
+      id: Date.now().toString(),  // Generamos un id único para el stage
+      title: '',
+      description: '',
+      price: 0,
     });
   }
 

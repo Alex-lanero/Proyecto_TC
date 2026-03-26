@@ -1,7 +1,13 @@
 <!-- src/app/features/trips/manager-applications/manager-applications.component.html -->
-<h1>Applications for Trip {{ tripId }}</h1>
+<h1>Applications</h1>
 
-<table>
+<!-- Mostrar el loading mientras se cargan las applications -->
+<div *ngIf="loading" class="loader">
+  Loading applications...
+</div>
+
+<!-- Mostrar solo si hay aplicaciones -->
+<table *ngIf="!loading && applications().length > 0">
   <thead>
     <tr>
       <th>Explorer</th>
@@ -11,7 +17,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let application of applications">
+    <tr *ngFor="let application of applications()">
       <td>{{ application.explorerId }}</td>
       <td>{{ application.status }}</td>
       <td>{{ application.comments }}</td>
@@ -22,3 +28,8 @@
     </tr>
   </tbody>
 </table>
+
+<!-- Mostrar mensaje si no hay applications -->
+<div *ngIf="!loading && applications().length === 0">
+  No applications available at the moment.
+</div>

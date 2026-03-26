@@ -44,7 +44,12 @@ export class AuthComponent {
 
     if (success) {
       this.errorMessage = '';
-      this.router.navigate(['/home']);
+      if(this.email === 'manager@acme.com'){
+        this.router.navigate(['/manager-applications']);
+      }
+      else{
+        this.router.navigate(['/home']);
+      }
     } else {
       this.errorMessage = 'Invalid credentials';
     }

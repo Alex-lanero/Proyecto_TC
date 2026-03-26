@@ -13,5 +13,5 @@ export const routes: Routes = [
   { path: 'trips', component: TripDisplay, canActivate: [authGuard] },
 
   { path: 'explorer-applications', component: ExplorerApplicationsComponent },
-  { path: 'manager-applications/:id', component: ManagerApplicationsComponent }
+  { path: 'manager-applications', component: ManagerApplicationsComponent }
 ];
