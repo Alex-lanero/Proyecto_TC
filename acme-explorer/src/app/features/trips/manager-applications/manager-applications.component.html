@@ -1,0 +1,24 @@
+<!-- src/app/features/trips/manager-applications/manager-applications.component.html -->
+<h1>Applications for Trip {{ tripId }}</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Explorer</th>
+      <th>Status</th>
+      <th>Comments</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let application of applications">
+      <td>{{ application.explorerId }}</td>
+      <td>{{ application.status }}</td>
+      <td>{{ application.comments }}</td>
+      <td>
+        <button (click)="acceptApplication(application)">Accept</button>
+        <button (click)="rejectApplication(application)">Reject</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

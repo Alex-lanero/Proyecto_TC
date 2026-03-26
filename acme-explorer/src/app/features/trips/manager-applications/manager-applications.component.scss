@@ -1,0 +1,83 @@
+/* Estilo general para la página */
+h1 {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 2rem;
+  color: #333;
+}
+
+/* Estilos para la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Cabecera de la tabla */
+th {
+  background-color: #4facfe;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+th:hover {
+  cursor: pointer;
+  background-color: #3a8dde;
+}
+
+/* Filas de la tabla */
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+/* Estilo para las filas alternadas */
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Acciones */
+button {
+  padding: 8px 12px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+/* Estilos para los botones de aceptar y rechazar */
+button:nth-child(1) {
+  background-color: #00c853; /* Verde */
+  color: white;
+}
+
+button:nth-child(2) {
+  background-color: #f44336; /* Rojo */
+  color: white;
+}
+
+/* Estilo para el contenedor de la tabla */
+tbody {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Espaciado entre las filas */
+tbody tr {
+  transition: background-color 0.3s;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
+}

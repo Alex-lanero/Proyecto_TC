@@ -1,0 +1,23 @@
+<!-- Agregar enlace para navegar a Manager Applications -->
+<table>
+  <thead>
+    <tr>
+      <th>Trip</th>
+      <th>Status</th>
+      <th>Comments</th>
+      <th>Created At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let application of applications">
+      <td>
+        <a [routerLink]="['/manager-applications', application.tripId]">
+          {{ application.tripId }}
+        </a>
+      </td>
+      <td>{{ application.status }}</td>
+      <td>{{ application.comments }}</td>
+      <td>{{ application.createdAt | date }}</td>
+    </tr>
+  </tbody>
+</table>
