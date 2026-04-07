@@ -21,7 +21,18 @@ export class ApplicationService {
 
   createApplication(tripId: string, explorerId: string) {
 
-    const newApplication: Application = {
+    const existing = this.applications().find(app =>
+      app.tripId === tripId &&
+      app.explorerId === explorerId &&
+      app.status !== 'REJECTED'
+    );
+
+    if (existing) {
+      alert('You already applied to this trip');
+      return;
+    }
+
+    const newApp = {
       id: Date.now().toString(),
       version: 1,
       tripId,
@@ -31,7 +42,7 @@ export class ApplicationService {
       comments: ''
     };
 
-    this.http.post(this.apiUrl, newApplication).subscribe(() => {
+    this.http.post(this.apiUrl, newApp).subscribe(() => {
       this.loadApplications();
     });
   }

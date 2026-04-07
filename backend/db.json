@@ -119,6 +119,15 @@
       "moment": "2026-04-07T14:59:54.335Z",
       "status": "ACCEPTED",
       "comments": ""
+    },
+    {
+      "id": "1775581074513",
+      "version": 1,
+      "tripId": "2",
+      "explorerId": "explorer@test.com",
+      "moment": "2026-04-07T16:57:54.513Z",
+      "status": "ACCEPTED",
+      "comments": ""
     }
   ],
   "users": [

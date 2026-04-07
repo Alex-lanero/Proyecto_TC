@@ -25,12 +25,14 @@ export class TripDisplay implements OnInit {
   selectedDifficulty = signal<'all' | 'easy' | 'medium' | 'hard'>('all');
   searchTerm = signal('');
 
+  selectedTripForFav = signal<string | null>(null);
+
   constructor(
     public authService: AuthService,
     private tripService: TripService,
     private applicationService: ApplicationService,
     private router: Router,
-    private favouriteService: FavouriteService
+    public favouriteService: FavouriteService
   ) {
     this.trips = this.tripService.trips;
     this.applications = this.applicationService.applications;
@@ -39,6 +41,11 @@ export class TripDisplay implements OnInit {
   ngOnInit() {
     this.tripService.loadTrips();
     this.applicationService.loadApplications();
+
+    const email = this.authService.currentUser()?.email;
+    if (email) {
+      this.favouriteService.load(email);
+    }
   }
 
   filteredTrips = computed(() => {
@@ -152,5 +159,41 @@ export class TripDisplay implements OnInit {
     // MVP: añade a la primera lista
     this.favouriteService.addTripToList(email, lists[0].id, trip.id);
     alert('Trip added to favourites');
+  }
+
+  isFavourite(tripId: string): boolean {
+    return this.favouriteService.isTripInAnyList(tripId);
+  }
+
+  openFavouriteSelector(tripId: string, event?: Event) {
+    event?.stopPropagation();
+    this.selectedTripForFav.set(tripId);
+  }
+
+  closeFavouriteSelector() {
+    this.selectedTripForFav.set(null);
+  }
+
+  confirmAddToFavourites(tripId: string, listId: string) {
+
+    const email = this.authService.currentUser()?.email;
+    if (!email) return;
+
+    this.favouriteService.addTripToList(email, listId, tripId);
+
+    this.selectedTripForFav.set(null);
+
+    alert('Added to favourites');
+  }
+
+  hasApplied(tripId: string): boolean {
+
+    const email = this.authService.currentUser()?.email;
+
+    return this.applicationService.applications().some(app =>
+      app.tripId === tripId &&
+      app.explorerId === email &&
+      app.status !== 'REJECTED'
+    );
   }
 }

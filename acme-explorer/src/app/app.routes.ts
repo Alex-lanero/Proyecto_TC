@@ -8,6 +8,7 @@ import { ManagerApplicationsComponent } from './features/trips/manager-applicati
 import { CreateTripComponent } from './features/trips/create-trip/create-trip.component'
 import { TripDetailComponent } from './features/trips/trip-detail/trip-detail.component'
 import { FavouritesComponent } from './features/trips/favourites/favourites.component';
+import { AcceptedTripsComponent } from './features/trips/accepted-trips/accepted-trips.component';
 
 // (lo crearemos luego)
 import { AdminDashboardComponent } from './features/admin/dashboard/admin-dashboard.component';
@@ -24,6 +25,7 @@ export const routes: Routes = [
 
   // 🔹 EXPLORER
   { path: 'explorer/applications', component: ExplorerApplicationsComponent },
+  { path: 'explorer/trips', component: AcceptedTripsComponent },
 
   // 🔹 MANAGER
   { path: 'manager/applications', component: ManagerApplicationsComponent },

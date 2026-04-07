@@ -18,11 +18,6 @@
       <p><strong>Price:</strong> {{ trip()?.price }} €</p>
     </div>
 
-    <!-- 🔥 APPLY -->
-    @if (authService.isExplorer()) {
-      <button (click)="apply()">Apply</button>
-    }
-
     <h2>Stages</h2>
 
     <!-- 🔥 ACCORDION SIMPLE -->

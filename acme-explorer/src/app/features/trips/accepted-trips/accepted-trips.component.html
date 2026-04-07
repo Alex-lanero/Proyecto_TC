@@ -1,0 +1,27 @@
+<div class="accepted-page">
+
+  <h1>My Trips</h1>
+
+  @if (acceptedTrips().length === 0) {
+    <p>No accepted trips yet</p>
+  }
+
+  <div class="grid">
+
+    @for (trip of acceptedTrips(); track trip.id) {
+
+      <a class="card" [routerLink]="['/trips', trip.id]">
+
+        <img [src]="trip.pictures?.[0]" />
+
+        <h2>{{ trip.title }}</h2>
+
+        <p>{{ trip.city }}, {{ trip.country }}</p>
+
+      </a>
+
+    }
+
+  </div>
+
+</div>

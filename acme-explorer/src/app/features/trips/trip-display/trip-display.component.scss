@@ -20,9 +20,12 @@
   background: white;
   border-radius: 12px;
   overflow: hidden;
-
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
   transition: 0.25s;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
 }
 
 .trip-card:hover {
@@ -231,4 +234,50 @@
 
 .trip-card {
   position: relative;
+}
+
+.favourite-tag {
+  background: #ffd700;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.fav-selector {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.fav-selector select {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.fav-selector button {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.fav-selector button:first-of-type {
+  background: #4caf50;
+}
+
+.fav-selector button.cancel {
+  background: #f44336;
+}
+
+.applied-tag {
+  background: #4caf50;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
 }

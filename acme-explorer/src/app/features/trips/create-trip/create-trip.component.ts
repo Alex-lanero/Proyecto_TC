@@ -19,7 +19,7 @@ export class CreateTripComponent implements OnInit{
   constructor(
     private tripService: TripService,
     private authService: AuthService,
-  private route: ActivatedRoute
+    private route: ActivatedRoute
   ) {}
 
   // 🔹 campos

@@ -68,12 +68,62 @@
 
       @if (authService.isExplorer() && !trip.cancelled) {
         <div class="trip-actions">
+        @if (!hasApplied(trip.id)) {
+
           <button class="trip-button" (click)="applyToTrip(trip)">
             Apply
           </button>
-          <button class="trip-button secondary" (click)="addToFavourites(trip, $event)">
-            Add to favourites
-          </button>
+
+        } @else{
+
+          <span class="applied-tag">
+            ✔ Already applied
+          </span>
+
+        }
+        @if (!isFavourite(trip.id)) {
+
+          @if (selectedTripForFav() !== trip.id) {
+            @if (favouriteService.favouriteLists().length === 0) {
+              <p>Create a favourite list first</p>
+            }
+            @else {
+              <button 
+                class="trip-button secondary"
+                (click)="openFavouriteSelector(trip.id, $event)">
+                Add to favourites
+              </button>
+            }
+
+          } @else {
+
+            <div class="fav-selector">
+
+              <select #listSelect>
+                @for (list of favouriteService.favouriteLists(); track list.id) {
+                  <option [value]="list.id">{{ list.name }}</option>
+                }
+              </select>
+
+              <button (click)="confirmAddToFavourites(trip.id, listSelect.value)">
+                Add
+              </button>
+
+              <button class="cancel" (click)="closeFavouriteSelector()">
+                Cancel
+              </button>
+
+            </div>
+
+          }
+
+        } @else {
+
+          <span class="favourite-tag">
+            ★ In favourites
+          </span>
+
+        }
         </div>
       }
 
