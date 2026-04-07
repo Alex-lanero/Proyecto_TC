@@ -7,6 +7,7 @@ import { Trip } from '../models/trip.model';
 import { TripService } from '../../../core/services/trip.service';
 import { ApplicationService } from '../../../core/services/application.service';
 import { Application } from '../models/application.model';
+import { FavouriteService } from '../../../core/services/favourite.service';
 
 @Component({
   selector: 'app-trip-display',
@@ -28,7 +29,8 @@ export class TripDisplay implements OnInit {
     public authService: AuthService,
     private tripService: TripService,
     private applicationService: ApplicationService,
-    private router: Router
+    private router: Router,
+    private favouriteService: FavouriteService
   ) {
     this.trips = this.tripService.trips;
     this.applications = this.applicationService.applications;
@@ -126,5 +128,29 @@ export class TripDisplay implements OnInit {
     event?.stopPropagation();
 
     this.tripService.reactivateTrip(trip);
+  }
+
+  addToFavourites(trip: Trip, event?: Event) {
+    event?.stopPropagation();
+    event?.preventDefault();
+
+    const email = this.authService.currentUser()?.email;
+    if (!email) {
+      alert('You must be logged in as explorer');
+      return;
+    }
+
+    this.favouriteService.load(email);
+
+    const lists = this.favouriteService.favouriteLists();
+
+    if (lists.length === 0) {
+      alert('Create a favourite list first');
+      return;
+    }
+
+    // MVP: añade a la primera lista
+    this.favouriteService.addTripToList(email, lists[0].id, trip.id);
+    alert('Trip added to favourites');
   }
 }

@@ -1,0 +1,54 @@
+<div class="favourites-page">
+
+  <div class="page-header">
+    <h1>My Favourite Lists</h1>
+    <p>Organise your favourite trips</p>
+  </div>
+
+  <div class="create-list-card">
+    <input
+      type="text"
+      placeholder="New list name"
+      [value]="newListName()"
+      (input)="newListName.set($any($event.target).value)"
+    />
+    <button (click)="createList()">Create List</button>
+  </div>
+
+  @if (favouriteLists().length === 0) {
+    <div class="empty-state">
+      No favourite lists yet
+    </div>
+  }
+
+  <div class="lists-grid">
+    @for (list of favouriteLists(); track list.id) {
+      <div class="list-card">
+
+        <div class="list-header">
+          <h2>{{ list.name }}</h2>
+          <button class="delete-list-btn" (click)="deleteList(list.id)">
+            Delete
+          </button>
+        </div>
+
+        @if (getTripsForList(list).length === 0) {
+          <p class="empty-list">This list is empty</p>
+        }
+
+        <div class="trip-list">
+          @for (trip of getTripsForList(list); track trip.id) {
+            <div class="trip-row">
+              <a [routerLink]="['/trips', trip.id]">{{ trip.title }}</a>
+              <button class="remove-trip-btn" (click)="removeTrip(list.id, trip.id)">
+                Remove
+              </button>
+            </div>
+          }
+        </div>
+
+      </div>
+    }
+  </div>
+
+</div>

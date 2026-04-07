@@ -1,0 +1,112 @@
+.favourites-page {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.create-list-card {
+  display: flex;
+  gap: 10px;
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  margin-bottom: 24px;
+}
+
+.create-list-card input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.create-list-card button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #4facfe, #00f2fe);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.empty-state {
+  text-align: center;
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  color: #666;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.lists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.list-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.list-header h2 {
+  margin: 0;
+}
+
+.delete-list-btn {
+  background: #f44336;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.empty-list {
+  color: #777;
+}
+
+.trip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fbff;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.trip-row a {
+  text-decoration: none;
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.remove-trip-btn {
+  background: #ff9800;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}

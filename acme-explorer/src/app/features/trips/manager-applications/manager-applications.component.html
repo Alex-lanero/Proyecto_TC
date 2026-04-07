@@ -1,55 +1,60 @@
-<div class="container">
+<div class="manager-table-page">
 
-  <h1 class="title">Manage Applications</h1>
+  <div class="page-header">
+    <h1>Manage Applications</h1>
+    <p>Applications for your trips</p>
+  </div>
 
-  @if (applications().length === 0) {
-    <p class="empty">No applications yet</p>
+  @if (filteredApplications().length === 0) {
+    <div class="empty-state">
+      No applications yet
+    </div>
   }
 
-  <div class="grid">
+  @if (filteredApplications().length > 0) {
+    <div class="table-wrapper">
 
-    @for (app of filteredApplications(); track app.id) {
+      <table class="applications-table">
+        <thead>
+          <tr>
+            <th>Trip</th>
+            <th>Explorer</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
 
-      <div class="app-card">
+        <tbody>
+          @for (app of filteredApplications(); track app.id) {
+            <tr>
+              <td>{{ getTripTitle(app.tripId) }}</td>
+              <td>{{ app.explorerId }}</td>
+              <td>
+                <span class="status-badge {{ app.status }}">
+                  {{ app.status }}
+                </span>
+              </td>
+              <td>{{ app.moment | date:'short' }}</td>
+              <td class="actions-cell">
+                @if (app.status === 'PENDING') {
+                  <button class="btn btn-reject" (click)="reject(app)">
+                    Reject
+                  </button>
 
-        <!-- HEADER -->
-        <div class="app-header">
-          <span class="trip-name">
-            {{ getTripTitle(app.tripId) }}
-          </span>
-
-          <span class="status {{ app.status }}">
-            {{ app.status }}
-          </span>
-        </div>
-
-        <!-- BODY -->
-        <div class="app-body">
-          <p><strong>Explorer:</strong> {{ app.explorerId }}</p>
-          <p class="date">{{ app.moment | date:'short' }}</p>
-        </div>
-
-        <!-- ACTIONS -->
-        <div class="actions">
-
-          @if (app.status === 'PENDING') {
-
-            <button class="reject" (click)="reject(app)">
-              Reject
-            </button>
-
-            <button class="due" (click)="markDue(app)">
-              Mark DUE
-            </button>
-
+                  <button class="btn btn-due" (click)="markDue(app)">
+                    Mark DUE
+                  </button>
+                } @else {
+                  <span class="no-actions">No actions</span>
+                }
+              </td>
+            </tr>
           }
+        </tbody>
+      </table>
 
-        </div>
-
-      </div>
-
-    }
-
-  </div>
+    </div>
+  }
 
 </div>

@@ -1,10 +1,10 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApplicationService } from '../../../core/services/application.service';
-import { AuthService } from '../../../core/services/auth.service';
 import { Application } from '../models/application.model';
 import { TripService } from '../../../core/services/trip.service';
 import { Trip } from '../models/trip.model';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-manager-applications',
@@ -32,11 +32,39 @@ export class ManagerApplicationsComponent implements OnInit {
     this.tripService.loadTrips();
   }
 
+  filteredApplications = computed(() => {
+    const managerId = this.authService.currentUser()?.id;
+
+    const myTrips = this.trips().filter(
+      t => t.managerId === managerId
+    );
+
+    const myTripIds = myTrips.map(t => t.id);
+
+    return this.applications().filter(
+      app => myTripIds.includes(app.tripId)
+    );
+  });
+
   reject(app: Application) {
+    const trip = this.trips().find(t => t.id === app.tripId);
+
+    if (trip?.managerId !== this.authService.currentUser()?.id) {
+      alert('Not your trip');
+      return;
+    }
+
     this.applicationService.updateStatus(app.id, 'REJECTED');
   }
 
   markDue(app: Application) {
+    const trip = this.trips().find(t => t.id === app.tripId);
+
+    if (trip?.managerId !== this.authService.currentUser()?.id) {
+      alert('Not your trip');
+      return;
+    }
+
     this.applicationService.updateStatus(app.id, 'DUE');
   }
 
@@ -44,22 +72,4 @@ export class ManagerApplicationsComponent implements OnInit {
     const trip = this.trips().find(t => t.id === tripId);
     return trip ? trip.title : 'Unknown trip';
   }
-
-  filteredApplications = computed(() => {
-
-    const managerId = this.authService.currentUser()?.id;
-
-    // 1. coger trips del manager
-    const myTrips = this.trips().filter(
-      t => t.managerId === managerId
-    );
-
-    const myTripIds = myTrips.map(t => t.id);
-
-    // 2. filtrar applications de esos trips
-    return this.applications().filter(
-      app => myTripIds.includes(app.tripId)
-    );
-
-  });
 }
