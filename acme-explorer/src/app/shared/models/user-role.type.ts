@@ -1,0 +1,1 @@
+export type UserRole = 'anonymous' | 'explorer' | 'manager' | 'administrator';

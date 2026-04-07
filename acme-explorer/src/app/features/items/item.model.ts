@@ -1,4 +1,4 @@
-import { Entity } from "../../shared/entity.model";
+import { Entity } from "../../shared/models/entity.model";
 
 export interface Item extends Entity {
     sku: string;

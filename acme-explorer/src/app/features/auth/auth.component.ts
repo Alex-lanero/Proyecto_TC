@@ -1,61 +1,51 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-import { trigger, transition, style, animate } from '@angular/animations';
-import { TranslatePipe } from '../../shared/pipes/translate-pipe';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [FormsModule, TranslatePipe],
+  imports: [CommonModule, FormsModule],
   templateUrl: './auth.component.html',
-  styleUrl: './auth.component.scss',
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(20px)' }),
-        animate('500ms ease-out',
-          style({ opacity: 1, transform: 'translateY(0)' })
-        )
-      ])
-    ])
-  ]
+  styleUrl: './auth.component.scss'
 })
 export class AuthComponent {
 
-  email = '';
-  password = '';
-  errorMessage = '';
+  email = signal('');
+  password = signal('');
+  isRegisterMode = signal(false);
+  error = signal('');
 
   constructor(
-    public authService: AuthService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
-  login() {
+  async submit() {
 
-    if (!this.email || !this.password) {
-      this.errorMessage = 'Please fill all fields';
-      return;
-    }
+    if (this.isRegisterMode()) {
 
-    const success = this.authService.login(this.email, this.password);
+      await this.authService.register(this.email(), this.password());
+      this.isRegisterMode.set(false);
+      this.error.set('User created. Please login.');
 
-    if (success) {
-      this.errorMessage = '';
-      if(this.email === 'manager@acme.com'){
-        this.router.navigate(['/manager-applications']);
-      }
-      else{
-        this.router.navigate(['/home']);
-      }
     } else {
-      this.errorMessage = 'Invalid credentials';
+
+      const success = await this.authService.login(this.email(), this.password());
+
+      if (success) {
+        this.router.navigate(['/home']);
+      } else {
+        this.error.set('Invalid credentials');
+      }
+
     }
   }
 
-  logout() {
-    this.authService.logout();
+  toggleMode() {
+    this.isRegisterMode.set(!this.isRegisterMode());
+    this.error.set('');
   }
 }

@@ -1,0 +1,45 @@
+@if (!trip()) {
+  <p>Loading...</p>
+}
+
+@if (trip()) {
+
+  <div class="detail-container">
+
+    <img [src]="trip()?.pictures?.[0]" class="detail-image">
+
+    <h1>{{ trip()?.title }}</h1>
+
+    <p>{{ trip()?.description }}</p>
+
+    <div class="info">
+      <p><strong>Location:</strong> {{ trip()?.city }}, {{ trip()?.country }}</p>
+      <p><strong>Difficulty:</strong> {{ trip()?.difficulty }}</p>
+      <p><strong>Price:</strong> {{ trip()?.price }} €</p>
+    </div>
+
+    <!-- 🔥 APPLY -->
+    @if (authService.isExplorer()) {
+      <button (click)="apply()">Apply</button>
+    }
+
+    <h2>Stages</h2>
+
+    <!-- 🔥 ACCORDION SIMPLE -->
+    @for (stage of trip()?.stages; track stage.id) {
+
+      <details class="stage">
+
+        <summary>
+          {{ stage.title }} — {{ stage.price }} €
+        </summary>
+
+        <p>{{ stage.description }}</p>
+
+      </details>
+
+    }
+
+  </div>
+
+}

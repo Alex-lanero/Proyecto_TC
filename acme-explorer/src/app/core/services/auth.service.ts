@@ -1,49 +1,70 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { User } from '../../shared/models/user.model';
+import { UserRole } from '../../shared/models/user-role.type';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  currentUser = signal<string | null>(null);
-  userRole = signal<'user' | 'admin' | 'manager' | null>(null);
+  private apiUrl = 'http://localhost:3000/users';
 
-  login(email: string, password: string): boolean {
+  currentUser = signal<User | null>(null);
+  role = signal<UserRole>('anonymous');
 
-    if (!email || !password) return false;
+  isAuthenticated = computed(() => this.role() !== 'anonymous');
+  isAnonymous = computed(() => this.role() === 'anonymous');
 
-    // usuarios fake
-    if (email === 'test@acme.com' && password === '1234') {
-      this.currentUser.set(email);
-      this.userRole.set('user');
-      return true;
-    }
+  isExplorer = computed(() => this.role() === 'explorer');
+  isManager = computed(() => this.role() === 'manager');
+  isAdministrator = computed(() => this.role() === 'administrator');
 
-    if (email === 'admin@acme.com' && password === '1234') {
-      this.currentUser.set(email);
-      this.userRole.set('admin');
-      return true;
-    }
+  constructor(private http: HttpClient) {}
 
-    if(email === 'manager@acme.com'  && password === '1234'){
-      this.currentUser.set(email);
-      this.userRole.set('manager');
-      return true;
-    }
+  login(email: string, password: string): Promise<boolean> {
 
-    return false;
+    return new Promise(resolve => {
+
+      this.http.get<User[]>(`${this.apiUrl}?email=${email}&password=${password}`)
+        .subscribe(users => {
+
+          if (users.length > 0) {
+            const user = users[0];
+
+            this.currentUser.set(user);
+            this.role.set(user.role);
+
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+
+        });
+
+    });
+  }
+
+  register(email: string, password: string): Promise<boolean> {
+
+    const newUser: User = {
+      id: Date.now().toString(),
+      email,
+      password,
+      role: 'explorer'
+    };
+
+    return new Promise(resolve => {
+
+      this.http.post(this.apiUrl, newUser).subscribe(() => {
+        resolve(true);
+      });
+
+    });
   }
 
   logout() {
     this.currentUser.set(null);
-    this.userRole.set(null);
-  }
-
-  isLogged() {
-    return this.currentUser() !== null;
-  }
-
-  getRole() {
-    return this.userRole();
+    this.role.set('anonymous');
   }
 }

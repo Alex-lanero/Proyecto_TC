@@ -1,9 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslatePipe } from '../pipes/translate-pipe';
-
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -14,18 +11,9 @@ import { TranslatePipe } from '../pipes/translate-pipe';
 })
 export class HeaderComponent {
 
-  authService = inject(AuthService);
-  router = inject(Router);
-
-  TranslatePipe = TranslatePipe;
+  constructor(public authService: AuthService) {}
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/']);
-  }
-
-  changeLang(lang: string) {
-    TranslatePipe.currentLang = lang;
-    localStorage.setItem('lang', lang);
   }
 }

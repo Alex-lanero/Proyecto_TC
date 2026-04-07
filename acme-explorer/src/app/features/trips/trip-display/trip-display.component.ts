@@ -1,117 +1,130 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Trip } from '../trip.model';
-import { AuthService } from '../../../core/services/auth.service';
-import { TripService } from '../../../core/services/trip.service';
+import { Component, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TripCardComponent } from '../trip-card/trip-card.component';
-import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
-import { Stage } from '../stage.model';
+import { Router, RouterLink } from '@angular/router';
+
+import { AuthService } from '../../../core/services/auth.service';
+import { Trip } from '../models/trip.model';
+import { TripService } from '../../../core/services/trip.service';
+import { ApplicationService } from '../../../core/services/application.service';
+import { Application } from '../models/application.model';
 
 @Component({
   selector: 'app-trip-display',
   standalone: true,
-  imports: [FormsModule, CommonModule, TripCardComponent, TranslatePipe],
+  imports: [CommonModule, RouterLink],
   templateUrl: './trip-display.component.html',
-  styleUrl: './trip-display.component.scss',
+  styleUrl: './trip-display.component.scss'
 })
 export class TripDisplay implements OnInit {
 
-  loading = true;
-  selectedDifficulty = 'all';
-  showForm = false;
-
-  newTrip: any = {
-    id: '',
-    version: 0,
-    ticker: '',
-    title: '',
-    description: '',
-    price: 0,
-    city: '',
-    country: '',
-    difficulty: 'easy',
-    maxParticipants: 0,
-    startDate: '',
-    endDate: '',
-    pictures: [''],
-    cancelled: false,
-    role: 'user',
-    stages: [] as Stage[], 
-  };
-
-  public authService = inject(AuthService);
-  private router = inject(Router);
-  private tripService = inject(TripService);
-
   trips = signal<Trip[]>([]);
+  applications = signal<Application[]>([]);
+  loading = false;
+
+  selectedDifficulty = signal<'all' | 'easy' | 'medium' | 'hard'>('all');
+  searchTerm = signal('');
+
+  constructor(
+    public authService: AuthService,
+    private tripService: TripService,
+    private applicationService: ApplicationService,
+    private router: Router
+  ) {
+    this.trips = this.tripService.trips;
+    this.applications = this.applicationService.applications;
+  }
 
   ngOnInit() {
-    const role = this.authService.getRole();
-    this.tripService.getTripsByRole(role!).subscribe(data => {
-      this.trips.set(
-        data.map(trip => ({ ...trip, cancelled: false }))
+    this.tripService.loadTrips();
+    this.applicationService.loadApplications();
+  }
+
+  filteredTrips = computed(() => {
+    let trips = this.trips();
+
+    if (!this.authService.isManager()) {
+      trips = trips.filter(t => !t.cancelled);
+    }
+
+    if (this.authService.isManager()) {
+      const managerId = this.authService.currentUser()?.id;
+      trips = trips.filter(t => t.managerId === managerId);
+    }
+
+    if (this.selectedDifficulty() !== 'all') {
+      trips = trips.filter(
+        t => t.difficulty === this.selectedDifficulty()
       );
-      this.loading = false;
-    });
+    }
+
+    if (this.searchTerm().trim() !== '') {
+      const term = this.searchTerm().toLowerCase();
+
+      trips = trips.filter(t =>
+        t.title.toLowerCase().includes(term) ||
+        t.description.toLowerCase().includes(term) ||
+        t.city.toLowerCase().includes(term) ||
+        t.country.toLowerCase().includes(term) ||
+        t.ticker.toLowerCase().includes(term)
+      );
+    }
+
+    return trips;
+  });
+
+  getAvailablePlaces(trip: Trip): number {
+    const acceptedApplications = this.applications().filter(
+      app => app.tripId === trip.id && app.status === 'ACCEPTED'
+    );
+
+    return trip.maxParticipants - acceptedApplications.length;
   }
 
-  cancelTrip(trip: Trip) {
-    trip.cancelled = true;
+  canCancel(trip: Trip): boolean {
+    if (trip.cancelled) return false;
+
+    const now = new Date();
+    const start = new Date(trip.startDate);
+    const diffDays = (start.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+
+    return diffDays >= 7;
   }
 
-  filteredTrips() {
-    const role = this.authService.getRole();
+  applyToTrip(trip: Trip) {
+    if (trip.cancelled) {
+      alert('This trip is cancelled');
+      return;
+    }
 
-    return this.trips().filter(trip => {
-      const matchDifficulty =
-        this.selectedDifficulty === 'all' ||
-        trip.difficulty === this.selectedDifficulty;
+    const now = new Date();
 
-      const matchRole =
-        trip.role === role || trip.role === 'admin';
+    if (new Date(trip.startDate) < now) {
+      alert('Trip already started');
+      return;
+    }
 
-      return matchDifficulty && matchRole;
-    });
+    this.applicationService.createApplication(
+      trip.id,
+      this.authService.currentUser()?.email || 'anonymous'
+    );
   }
 
-  addStage() {
-    this.newTrip.stages.push({
-      id: Date.now().toString(),  // Generamos un id único para el stage
-      title: '',
-      description: '',
-      price: 0,
-    });
+  cancelTrip(trip: Trip, event?: Event) {
+    event?.stopPropagation();
+    event?.preventDefault();
+    this.tripService.cancelTrip(trip);
   }
 
-  createTrip() {
+  editTrip(trip: Trip, event?: Event) {
+    event?.stopPropagation();
+    event?.preventDefault();
 
-    const tripToSend = {
-      ...this.newTrip,
-      id: Date.now().toString(),
-      ticker: this.generateTicker()
-    };
-
-    this.tripService.createTrip(tripToSend).subscribe(() => {
-      this.showForm = false;
-
-      const role = this.authService.getRole();
-      this.tripService.getTripsByRole(role!).subscribe(data => {
-        this.trips.set(data);
-      });
-    });
+    this.router.navigate(['/manager/edit-trip', trip.id]);
   }
 
-  generateTicker(): string {
-    const date = new Date();
-    const y = date.getFullYear().toString().slice(2);
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const d = String(date.getDate()).padStart(2, '0');
+  reactivateTrip(trip: Trip, event?: Event) {
+    event?.stopPropagation();
 
-    const letters = Math.random().toString(36).substring(2, 6).toUpperCase();
-
-    return `${y}${m}${d}-${letters}`;
+    this.tripService.reactivateTrip(trip);
   }
-
 }

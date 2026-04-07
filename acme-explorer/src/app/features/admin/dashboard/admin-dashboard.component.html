@@ -1,0 +1,67 @@
+<div class="dashboard">
+
+  <h1 class="title">Admin Dashboard</h1>
+
+  <!-- CARDS PRINCIPALES -->
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <h3>Total Trips</h3>
+      <p>{{ totalTrips() }}</p>
+    </div>
+
+    <div class="stat-card">
+      <h3>Total Applications</h3>
+      <p>{{ totalApplications() }}</p>
+    </div>
+
+  </div>
+
+  <!-- STATUS -->
+  <div class="status-section">
+
+    <h2>Applications by Status</h2>
+
+    <div class="status-grid">
+
+      @for (status of objectKeys(applicationsByStatus()); track status) {
+
+        <div class="status-card {{ status }}">
+          <p class="status-name">{{ status }}</p>
+          <p class="status-value">
+            {{ applicationsByStatus()[status] }}
+          </p>
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+  <!-- 🔥 NUEVO: CREATE MANAGER -->
+  <div class="create-manager">
+
+    <h2>Create Manager</h2>
+
+    <input
+      type="email"
+      placeholder="Manager email"
+      [value]="newManagerEmail()"
+      (input)="newManagerEmail.set($any($event.target).value)"
+    />
+
+    <input
+      type="password"
+      placeholder="Password"
+      [value]="newManagerPassword()"
+      (input)="newManagerPassword.set($any($event.target).value)"
+    />
+
+    <button (click)="createManager()">
+      Create Manager
+    </button>
+
+  </div>
+
+</div>

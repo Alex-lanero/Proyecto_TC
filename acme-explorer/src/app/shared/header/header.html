@@ -1,35 +1,68 @@
 <header class="header">
 
-  <div class="logo">🌍 Acme Explorer</div>
+  <div class="header-container">
 
-  <nav class="nav">
-
-    <div class="lang-buttons">
-      <button 
-        (click)="changeLang('es')"
-        [class.active]="TranslatePipe.currentLang === 'es'"
-      >
-        ES
-      </button>
-
-      <button 
-        (click)="changeLang('en')"
-        [class.active]="TranslatePipe.currentLang === 'en'"
-      >
-        EN
-      </button>
+    <!-- LOGO -->
+    <div class="logo" routerLink="/home">
+      🌍 <span>Acme Explorer</span>
     </div>
-    <a routerLink="/home">Home</a>
-    <a routerLink="/trips">Trips</a>
-    <a routerLink="/explorer-applications">My Applications</a>
-    <a routerLink="/manager-applications">Applications</a>
 
-    @if (!authService.isLogged()) {
-      <a routerLink="/login">Login</a>
-    } @else {
-      <button (click)="logout()">Logout</button>
-    }
+    <!-- NAV -->
+    <nav class="nav">
 
-  </nav>
+      <!-- LINKS PRINCIPALES -->
+      <div class="nav-left">
+        <a routerLink="/home" routerLinkActive="active">Home</a>
+        <a routerLink="/trips" routerLinkActive="active">Trips</a>
+        <span class="user">
+          {{ authService.currentUser()?.email }}
+        </span>
+      </div>
+
+      <!-- LINKS DERECHA -->
+      <div class="nav-right">
+
+        <!-- EXPLORER -->
+        @if (authService.isExplorer()) {
+          <a routerLink="/explorer/applications" routerLinkActive="active">
+            My Applications
+          </a>
+        }
+
+        <!-- MANAGER -->
+        @if (authService.isManager()) {
+          <a routerLink="/manager/applications" routerLinkActive="active">
+            Manage
+          </a>
+
+          <a routerLink="/manager/create-trip" class="cta">
+            + Create Trip
+          </a>
+        }
+
+        <!-- ADMIN -->
+        @if (authService.isAdministrator()) {
+          <a routerLink="/admin/dashboard" routerLinkActive="active">
+            Dashboard
+          </a>
+        }
+
+        <!-- ANÓNIMO -->
+        @if (authService.isAnonymous()) {
+          <a routerLink="/login" class="login-btn">Login</a>
+        }
+
+        <!-- AUTH -->
+        @if (authService.isAuthenticated()) {
+          <button class="logout-btn" (click)="logout()">
+            Logout
+          </button>
+        }
+
+      </div>
+
+    </nav>
+
+  </div>
 
 </header>

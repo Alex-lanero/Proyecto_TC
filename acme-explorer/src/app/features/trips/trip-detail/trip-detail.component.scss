@@ -1,0 +1,33 @@
+.detail-container {
+  max-width: 800px;
+  margin: auto;
+}
+
+.detail-image {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.info {
+  margin-bottom: 15px;
+}
+
+/* STAGES */
+.stage {
+  background: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+summary {
+  cursor: pointer;
+  font-weight: bold;
+}

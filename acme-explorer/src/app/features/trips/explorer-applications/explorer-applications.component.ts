@@ -1,33 +1,71 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { AuthService } from '../../../core/services/auth.service';
-import { ApplicationService } from '../../../core/services/application.service';
-import { Application } from '../application.model';  // Ensure you have this model
-import { DatePipe } from '@angular/common'; // For date formatting
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ApplicationService } from '../../../core/services/application.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { Application } from '../models/application.model';
+import { TripService } from '../../../core/services/trip.service';
+import { Trip } from '../models/trip.model';
 
 @Component({
   selector: 'app-explorer-applications',
-  templateUrl: './explorer-applications.component.html',
-  styleUrls: ['./explorer-applications.component.scss'],
+  standalone: true,
   imports: [CommonModule],
-  providers: [DatePipe]  // Include DatePipe in providers
+  templateUrl: './explorer-applications.component.html',
+  styleUrl: './explorer-applications.component.scss'
 })
 export class ExplorerApplicationsComponent implements OnInit {
 
-  applications: Application[] = [];
+  objectKeys = Object.keys;
 
-  // Inject services
-  private authService = inject(AuthService);
-  private applicationService = inject(ApplicationService);
+  applications = signal<Application[]>([]);
+  trips = signal<Trip[]>([]);
 
-  ngOnInit(): void {
-    const explorerId = this.authService.currentUser();
-    if (explorerId) {
-      this.applicationService.getApplicationsByExplorer(explorerId).subscribe((data: Application[]) => {
-        this.applications = data;
-      });
-    } else {
-      console.error('Explorer ID is missing');
-    }
+  constructor(
+    private applicationService: ApplicationService,
+    private tripService: TripService,
+    public authService: AuthService
+  ) {
+    this.applications = this.applicationService.applications;
+    this.trips = this.tripService.trips;
   }
+
+  ngOnInit() {
+    this.applicationService.loadApplications();
+    this.tripService.loadTrips();
+  }
+
+  myApplications = computed(() => {
+    return this.applications().filter(
+      app => app.explorerId === this.authService.currentUser()?.email
+    );
+  });
+
+  // 🔹 agrupación por estado
+  groupedApplications = computed(() => {
+    const groups: Record<string, Application[]> = {};
+
+    this.myApplications().forEach(app => {
+      if (!groups[app.status]) {
+        groups[app.status] = [];
+      }
+      groups[app.status].push(app);
+    });
+
+    return groups;
+  });
+
+  // 🔹 obtener nombre del trip
+  getTripTitle(tripId: string): string {
+    const trip = this.trips().find(t => t.id === tripId);
+    return trip ? trip.title : 'Unknown trip';
+  }
+
+  pay(app: Application) {
+    this.applicationService.payApplication(app.id);
+  }
+
+  cancel(app: Application) {
+    this.applicationService.cancelApplication(app.id);
+  }
+
 }

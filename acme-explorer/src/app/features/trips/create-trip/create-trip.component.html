@@ -1,0 +1,107 @@
+<div class="container">
+
+  <h1>Create Trip</h1>
+
+  <h3>Basic Info</h3>
+
+  <input
+        placeholder="Title"
+        [value]="title()"
+        (input)="title.set($any($event.target).value)"
+    />
+
+    <textarea
+        placeholder="Description"
+        [value]="description()"
+        (input)="description.set($any($event.target).value)"
+    ></textarea>
+
+    <input
+        placeholder="City"
+        [value]="city()"
+        (input)="city.set($any($event.target).value)"
+    />
+
+    <input
+        placeholder="Country"
+        [value]="country()"
+        (input)="country.set($any($event.target).value)"
+    />
+
+    <input
+        placeholder="Image URL"
+        [value]="pictures()"
+        (input)="pictures.set($any($event.target).value)"
+    />
+
+    <select
+        [value]="difficulty()"
+        (change)="difficulty.set($any($event.target).value)"
+    >
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+    </select>
+
+    <input
+        type="number"
+        placeholder="Max participants"
+        [value]="maxParticipants()"
+        (input)="maxParticipants.set(+$any($event.target).value)"
+    />
+
+  <input
+    type="date"
+    [value]="startDate()"
+    (change)="startDate.set($any($event.target).value)"
+    />
+  <input
+    type="date"
+    [value]="endDate()"
+    (change)="endDate.set($any($event.target).value)"
+    />
+
+<h3>Stages</h3>
+
+<button class="trip-button secondary"  (click)="addStage()">+ Add Stage</button>
+
+<div class="stages-container">
+
+  @for (stage of stages(); track stage.id; let i = $index) {
+
+    <div class="stage-card">
+
+      <input
+        placeholder="Title"
+        [value]="stage.title"
+        (input)="updateStage(i, 'title', $any($event.target).value)"
+      />
+
+      <input
+        placeholder="Description"
+        [value]="stage.description"
+        (input)="updateStage(i, 'description', $any($event.target).value)"
+      />
+
+      <input
+        type="number"
+        placeholder="Price"
+        [value]="stage.price"
+        (input)="updateStage(i, 'price', $any($event.target).value)"
+      />
+
+      <button (click)="removeStage(i)">
+        Remove
+      </button>
+
+    </div>
+
+  }
+
+</div>
+
+  <h3>Total price: {{ totalPrice() }} €</h3>
+
+  <button (click)="createTrip()">Create Trip</button>
+
+</div>

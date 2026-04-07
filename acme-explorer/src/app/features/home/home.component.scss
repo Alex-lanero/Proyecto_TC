@@ -5,10 +5,10 @@
 
 /* HERO */
 .hero {
-  padding: 100px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 80px 20px;
 
   background: linear-gradient(135deg, #4facfe, #00f2fe);
 }
@@ -19,8 +19,11 @@
   border-radius: 12px;
   text-align: center;
 
+  max-width: 600px;
+
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
+
 
 .hero-card h1 {
   margin-bottom: 10px;

@@ -1,19 +1,62 @@
-<!-- Agregar enlace para navegar a Manager Applications -->
-<table>
-  <thead>
-    <tr>
-      <th>Trip</th>
-      <th>Status</th>
-      <th>Comments</th>
-      <th>Created At</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let application of applications">
-      <td>{{ application.tripId }}</td>
-      <td>{{ application.status }}</td>
-      <td>{{ application.comments }}</td>
-      <td>{{ application.createdAt | date }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="container">
+
+  <h1 class="title">My Applications</h1>
+
+  @if (myApplications().length === 0) {
+    <p class="empty">No applications yet</p>
+  }
+
+  @for (group of objectKeys(groupedApplications()); track group) {
+
+    <div class="group">
+
+      <h2 class="group-title">{{ group }}</h2>
+
+      <div class="grid">
+
+        @for (app of groupedApplications()[group]; track app.id) {
+
+          <div class="app-card">
+
+            <div class="app-header">
+              <span class="trip-name">
+                {{ getTripTitle(app.tripId) }}
+              </span>
+              <span class="status {{ app.status }}">
+                {{ app.status }}
+              </span>
+            </div>
+
+            <div class="app-body">
+              <p class="date">
+                {{ app.moment | date:'short' }}
+              </p>
+            </div>
+
+            <div class="actions">
+
+              @if (app.status === 'DUE') {
+                <button class="pay" (click)="pay(app)">
+                  Pay
+                </button>
+              }
+
+              @if (app.status === 'PENDING' || app.status === 'DUE') {
+                <button class="cancel" (click)="cancel(app)">
+                  Cancel
+                </button>
+              }
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

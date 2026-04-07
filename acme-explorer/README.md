@@ -1,170 +1,177 @@
-🌍 Acme Explorer - Frontend
+# 🌍 Acme Explorer
 
-This project is a web application developed using Angular as part of the Master MIS-CLOUD Front-End Technologies course.
+Aplicación web desarrollada en Angular para la gestión de viajes (Trips) con diferentes roles: Explorer, Manager y Administrator.
 
-The application allows users to explore trips using a dynamic backend (JSON Server) and includes authentication, role-based behavior, and UI enhancements.
+---
 
-🚀 Features
-🔐 Authentication & Security
-Login / Logout system
-Route protection using Auth Guard
-Role-based behavior (user / admin)
-🧠 State & Architecture
-Reactive state management using Angular Signals
-Component-based architecture (parent + child components)
-Clean separation: core / features / shared
-🌐 Backend Integration
-REST API consumption using JSON Server
-Dynamic data loading from backend
-Create new trips (admin only)
-🧳 Trips Functionality
-Dynamic trip listing from backend
-Filter trips by difficulty (easy, medium, hard)
-Cancel trips (UI state)
-Role-based filtering:
-Users see user trips + admin trips
-Admin sees all trips
-🧩 Components
-TripDisplayComponent (parent)
-TripCardComponent (child)
-Displays trip summary
-Expandable card → shows additional information on click
-🎨 UI / UX Enhancements
-Responsive card layout
-Hover effects and animations
-Expandable cards (details on click)
-Styled difficulty badges (easy / medium / hard)
-Improved form UI for trip creation
-🌍 Internationalization (i18n)
-Custom Translate Pipe
-Language switcher (ES / EN)
-Real-time UI updates without reload
-Language persistence using localStorage
-🔧 Pipes
-Built-in pipe:
-date pipe used in footer
-Custom pipes:
-translate pipe (UI translations)
-difficulty styling (badges/colors)
-👤 Test Credentials
+## 🚀 Descripción
 
-To access the application:
+Acme Explorer permite a los usuarios explorar viajes, aplicar a ellos y gestionarlos dependiendo de su rol.
 
-Normal user
-Email: test@acme.com
-Password: 1234
+El sistema implementa un modelo completo de dominio con relaciones entre usuarios, viajes y aplicaciones.
 
-Admin user
-Email: admin@acme.com
-Password: 1234
+---
 
-🧭 Application Flow
-The application starts on the login page.
-The user enters valid credentials.
-After login, the user is redirected to the home page.
-From there, the user can navigate to:
-🏠 Home
-🧳 Trips
-Trips Page
-Fetches data from JSON Server
-Displays trips using reusable card component
-Allows:
-Filtering by difficulty
-Cancelling trips
-Expanding cards to view more details
-Admin Features
+## 👥 Roles
 
-If the logged user is admin:
+### 🧑‍💼 Explorer
+- Registrarse y autenticarse
+- Explorar viajes disponibles
+- Aplicar a viajes
+- Cancelar aplicaciones
+- Pagar aplicaciones (estado DUE)
+- Ver sus aplicaciones agrupadas por estado
 
-Can create new trips via form
-Can choose visibility:
-user trip
-admin trip
-Access Control
+explorer@test.com
+1234
 
-If the user is not authenticated:
+---
 
-Access to /trips is blocked
-Redirected to /login
-🔒 Route Protection
-/trips is protected using an Auth Guard
-Only authenticated users can access it
-🌐 Backend (JSON Server)
+### 🧑‍🔧 Manager
+- Crear viajes
+- Editar viajes
+- Cancelar viajes (si > 7 días)
+- Gestionar aplicaciones:
+  - Aceptar → pasa a DUE
+  - Rechazar
+- Solo puede gestionar SUS viajes
 
-This project uses JSON Server as a mock backend.
+manager@test.com
+1234
 
-▶️ Run JSON Server
+---
+
+### 🧑‍💻 Administrator
+- Acceso al dashboard
+- Ver métricas del sistema:
+  - Total trips
+  - Total applications
+  - Applications por estado
+- Crear nuevos managers
+
+admin@test.com
+1234
+
+---
+
+## ✈️ Funcionalidades principales
+
+### Trips
+- Creación de viajes con:
+  - Título, descripción
+  - Localización (ciudad, país)
+  - Fechas
+  - Dificultad (easy, medium, hard)
+  - Imagen
+  - Stages (etapas con precio)
+
+- Edición de viajes
+- Cancelación con restricciones:
+  - ❌ No cancelar si < 7 días
+
+---
+
+### Applications
+- Estados:
+  - PENDING
+  - DUE
+  - ACCEPTED
+  - REJECTED
+  - CANCELLED
+
+- Flujo:
+  1. Explorer aplica → PENDING
+  2. Manager acepta → DUE
+  3. Explorer paga → ACCEPTED
+
+---
+
+### Reglas de negocio implementadas
+
+- ❌ No aplicar a viajes cancelados
+- ❌ No aplicar a viajes ya iniciados
+- ❌ No cancelar viajes si < 7 días
+- ✔ Manager solo gestiona sus trips
+- ✔ Explorer solo ve trips no cancelados
+- ✔ Manager puede reactivar trips editando
+
+---
+
+## 🔍 Búsqueda y filtros
+
+- Filtro por dificultad
+- Búsqueda por:
+  - título
+  - descripción
+  - ciudad
+  - país
+  - ticker
+
+---
+
+## 🎨 UI/UX
+
+- Diseño responsive
+- Cards para trips y applications
+- Dashboard visual para admin
+- Header dinámico por rol
+- Estados con colores:
+  - 🟢 easy
+  - 🟠 medium
+  - 🔴 hard
+
+---
+
+## 🧱 Arquitectura
+
+- Angular Standalone Components
+- Signals para estado reactivo
+- Servicios para lógica de negocio
+- JSON Server como backend simulado
+
+---
+
+## 🗄️ Backend
+
+Simulado con:
+
+```bash
 npx json-server --watch db.json --port 3000
-API endpoint
-http://localhost:3000/trips
-🧩 Project Structure
-src/app/
-│
-├── core/
-│   ├── services/
-│   │   ├── auth.service.ts
-│   │   └── trip.service.ts
-│   └── guards/
-│       └── auth.guard.ts
-│
-├── features/
-│   ├── auth/
-│   ├── home/
-│   └── trips/
-│       ├── trip-display/
-│       └── trip-card/   ← child component
-│
-├── shared/
-│   ├── header/
-│   ├── footer/
-│   └── pipes/
-│       ├── translate.pipe.ts
-│       └── difficulty.pipe.ts
-│
-└── app.routes.ts
-🛠️ Technologies Used
-Angular (Standalone Components)
-TypeScript
-Angular Signals
-Angular Router
-JSON Server (mock backend)
-HTML / SCSS
-▶️ How to Run the Project
-1. Install dependencies
+
+📦 Instalación
 npm install
-2. Run JSON Server (IMPORTANT)
-npx json-server --watch db.json --port 3000
-3. Run Angular app
 npm start
-4. Open in browser
-http://localhost:4200
-⚠️ Notes
-Authentication is simulated (no Firebase)
-Credentials are hardcoded
-JSON Server acts as a mock backend
-Trips are dynamically loaded from /trips
-Language selection is stored in localStorage
-📦 Delivery Note
+📊 Estructura del proyecto
+src/app/
+  core/
+    services/
+    guards/
 
-Before submitting:
+  features/
+    auth/
+    trips/
+    admin/
 
-Remove:
+  shared/
+    header/
+    footer/
+🧠 Modelo de dominio
 
-node_modules/
-.angular/
-dist/
+Relaciones principales:
 
-Install dependencies using:
+Un Manager → muchos Trips
+Un Trip → muchas Applications
+Un Explorer → muchas Applications
+📌 Estado del proyecto
 
-npm install
-🏁 Final Result
+✔ Funcional
+✔ Roles completos
+✔ CRUD de trips
+✔ Gestión de aplicaciones
+✔ Dashboard admin
+✔ UI mejorada
 
-This project demonstrates:
+🏁 Autor
 
-Angular architecture with standalone components
-Authentication and route protection
-Backend integration using JSON Server
-Reusable components (parent/child)
-Custom pipes and built-in pipes
-Internationalization (ES/EN)
-Interactive and modern UI
+Alex García Lanero
+

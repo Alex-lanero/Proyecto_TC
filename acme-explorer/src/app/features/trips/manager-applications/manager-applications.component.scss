@@ -1,83 +1,115 @@
-/* Estilo general para la página */
-h1 {
+/* TITULO */
+.title {
   text-align: center;
-  margin: 20px 0;
-  font-size: 2rem;
-  color: #333;
+  margin-bottom: 30px;
 }
 
-/* Estilos para la tabla */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px auto;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.empty {
+  text-align: center;
+  color: #777;
 }
 
-/* Cabecera de la tabla */
-th {
-  background-color: #4facfe;
-  color: white;
-  padding: 12px;
-  text-align: left;
-  font-size: 1.1rem;
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
 }
 
-th:hover {
-  cursor: pointer;
-  background-color: #3a8dde;
+/* CARD */
+.app-card {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transition: 0.2s;
 }
 
-/* Filas de la tabla */
-td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #f1f1f1;
+.app-card:hover {
+  transform: translateY(-4px);
 }
 
-/* Estilo para las filas alternadas */
-tr:nth-child(even) {
-  background-color: #f9f9f9;
+/* HEADER */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Acciones */
-button {
-  padding: 8px 12px;
-  margin-right: 10px;
-  border: none;
+.trip-name {
+  font-weight: bold;
+}
+
+/* STATUS */
+.status {
+  padding: 4px 8px;
   border-radius: 6px;
+  font-size: 12px;
+  color: white;
+}
+
+.status.PENDING {
+  background: #ff9800;
+}
+
+.status.DUE {
+  background: #2196f3;
+}
+
+.status.ACCEPTED {
+  background: #4caf50;
+}
+
+.status.REJECTED {
+  background: #f44336;
+}
+
+/* BODY */
+.app-body {
+  margin: 10px 0;
+}
+
+.date {
+  font-size: 13px;
+  color: #666;
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* BOTONES */
+button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
   cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  opacity: 0.8;
-}
-
-/* Estilos para los botones de aceptar y rechazar */
-button:nth-child(1) {
-  background-color: #00c853; /* Verde */
   color: white;
 }
 
-button:nth-child(2) {
-  background-color: #f44336; /* Rojo */
-  color: white;
+/* REJECT */
+button.reject {
+  background: #f44336;
 }
 
-/* Estilo para el contenedor de la tabla */
-tbody {
-  font-size: 1rem;
-  color: #555;
+button.reject:hover {
+  background: #c62828;
 }
 
-/* Espaciado entre las filas */
-tbody tr {
-  transition: background-color 0.3s;
+/* DUE */
+button.due {
+  background: #2196f3;
 }
 
-tbody tr:hover {
-  background-color: #f1f1f1;
+button.due:hover {
+  background: #1976d2;
 }

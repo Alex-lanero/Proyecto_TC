@@ -1,63 +1,103 @@
-/* Fondo */
+/* CONTENEDOR GENERAL */
 .auth-wrapper {
-  height: 100vh;
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+
   background: linear-gradient(135deg, #4facfe, #00f2fe);
 }
 
-/* Card */
+/* CARD */
 .auth-card {
+  width: 340px;
+  padding: 2.2rem;
+
   background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  width: 280px;
+  border-radius: 16px;
+
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  gap: 14px;
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+
+  animation: fadeIn 0.4s ease;
 }
 
-/* Títulos */
-.auth-title {
-  margin: 0;
+/* TITULO */
+.auth-card h2 {
   text-align: center;
+  margin-bottom: 10px;
 }
 
-.auth-subtitle {
-  text-align: center;
-  color: #666;
-  font-size: 0.9rem;
-}
+/* INPUTS */
+.auth-card input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 
-/* Inputs */
-input {
-  padding: 0.6rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
+  font-size: 14px;
+  outline: none;
 
-/* Botón */
-button {
-  padding: 0.6rem;
-  border: none;
-  border-radius: 6px;
-  background: #3182ce;
-  color: white;
-  cursor: pointer;
   transition: 0.2s;
 }
 
-button:hover {
-  background: #2b6cb0;
+/* FOCUS INPUT */
+.auth-card input:focus {
+  border-color: #4facfe;
+  box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
 }
 
-.error-message {
-  background: #ffe5e5;
-  color: #c53030;
-  padding: 0.5rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  text-align: center;
+/* BOTÓN PRINCIPAL */
+.auth-card button:first-of-type {
+  margin-top: 10px;
+  padding: 12px;
+
+  background: linear-gradient(90deg, #4facfe, #00f2fe);
+  border: none;
+  border-radius: 8px;
+
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.auth-card button:first-of-type:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* BOTÓN SECUNDARIO */
+.auth-card button:last-of-type {
+  background: none;
+  border: none;
+  color: #4facfe;
+
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.auth-card button:last-of-type:hover {
+  text-decoration: underline;
+}
+
+/* ERROR */
+.auth-card p {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* ANIMACIÓN */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

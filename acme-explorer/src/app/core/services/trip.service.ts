@@ -1,27 +1,62 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Trip } from '../../features/trips/trip.model';
+import { Trip } from '../../features/trips/models/trip.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TripService {
 
-  private http = inject(HttpClient);
-
   private apiUrl = 'http://localhost:3000/trips';
 
-  getTrips(): Observable<Trip[]> {
-    return this.http.get<Trip[]>(this.apiUrl);
+  trips = signal<Trip[]>([]);
+
+  constructor(private http: HttpClient) {}
+
+  loadTrips() {
+    this.http.get<Trip[]>(this.apiUrl).subscribe(data => {
+      this.trips.set(data);
+    });
   }
 
-  getTripsByRole(role: string) {
-    return this.http.get<Trip[]>(`http://localhost:3000/trips?role=${role}`);
+  cancelTrip(trip: Trip) {
+
+    const now = new Date();
+    const start = new Date(trip.startDate);
+
+    const diffDays = (start.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+
+    if (diffDays < 7) {
+      alert('Cannot cancel trip less than 7 days before start');
+      return;
+    }
+
+    this.http.patch(`${this.apiUrl}/${trip.id}`, {
+      cancelled: true
+    }).subscribe(() => {
+      this.loadTrips();
+    });
   }
 
   createTrip(trip: Trip) {
-    return this.http.post('http://localhost:3000/trips', trip);
+    this.http.post(this.apiUrl, trip).subscribe(() => {
+      this.loadTrips();
+    });
   }
 
+  updateTrip(trip: Trip) {
+    this.http.put(`${this.apiUrl}/${trip.id}`, trip)
+      .subscribe(() => {
+        this.loadTrips();
+      });
+  }
+  reactivateTrip(trip: Trip) {
+
+    this.http.patch(`${this.apiUrl}/${trip.id}`, {
+      cancelled: false
+    }).subscribe(() => {
+      this.loadTrips();
+    });
+
+  }
 }

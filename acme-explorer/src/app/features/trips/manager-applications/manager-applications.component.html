@@ -1,35 +1,55 @@
-<!-- src/app/features/trips/manager-applications/manager-applications.component.html -->
-<h1>Applications</h1>
+<div class="container">
 
-<!-- Mostrar el loading mientras se cargan las applications -->
-<div *ngIf="loading" class="loader">
-  Loading applications...
-</div>
+  <h1 class="title">Manage Applications</h1>
 
-<!-- Mostrar solo si hay aplicaciones -->
-<table *ngIf="!loading && applications().length > 0">
-  <thead>
-    <tr>
-      <th>Explorer</th>
-      <th>Status</th>
-      <th>Comments</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let application of applications()">
-      <td>{{ application.explorerId }}</td>
-      <td>{{ application.status }}</td>
-      <td>{{ application.comments }}</td>
-      <td>
-        <button (click)="acceptApplication(application)">Accept</button>
-        <button (click)="rejectApplication(application)">Reject</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  @if (applications().length === 0) {
+    <p class="empty">No applications yet</p>
+  }
 
-<!-- Mostrar mensaje si no hay applications -->
-<div *ngIf="!loading && applications().length === 0">
-  No applications available at the moment.
+  <div class="grid">
+
+    @for (app of filteredApplications(); track app.id) {
+
+      <div class="app-card">
+
+        <!-- HEADER -->
+        <div class="app-header">
+          <span class="trip-name">
+            {{ getTripTitle(app.tripId) }}
+          </span>
+
+          <span class="status {{ app.status }}">
+            {{ app.status }}
+          </span>
+        </div>
+
+        <!-- BODY -->
+        <div class="app-body">
+          <p><strong>Explorer:</strong> {{ app.explorerId }}</p>
+          <p class="date">{{ app.moment | date:'short' }}</p>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="actions">
+
+          @if (app.status === 'PENDING') {
+
+            <button class="reject" (click)="reject(app)">
+              Reject
+            </button>
+
+            <button class="due" (click)="markDue(app)">
+              Mark DUE
+            </button>
+
+          }
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
 </div>

@@ -1,114 +1,99 @@
-
 @if (loading) {
   <div class="loader">Loading trips...</div>
 }
-    <h1 class="trip-title-page">{{ 'Available Trips' | translate }}</h1>
-<div class="filters">
 
-  <button (click)="selectedDifficulty = 'all'">{{ 'all' | translate }}</button>
-  <button (click)="selectedDifficulty = 'easy'">{{ 'easy' | translate }}</button>
-  <button (click)="selectedDifficulty = 'medium'">{{ 'medium' | translate }}</button>
-  <button (click)="selectedDifficulty = 'hard'">{{ 'hard' | translate }}</button>
+<h1 class="trip-title-page">Available Trips</h1>
 
+<div class="search-box">
+  <input
+    type="text"
+    placeholder="Search trips..."
+    [value]="searchTerm()"
+    (input)="searchTerm.set($any($event.target).value)"
+  />
 </div>
-@if (authService.getRole() === 'admin') {
-  <div class="create-container">
-    <button class="create-button" (click)="showForm = !showForm">
-      + {{ 'Create Trip' | translate }}
-    </button>
-  </div>
-}
-@if (showForm) {
-  <div class="create-form">
 
-    <h2>Create new trip</h2>
+<div class="filters">
+  <button (click)="selectedDifficulty.set('all')">All</button>
+  <button (click)="selectedDifficulty.set('easy')">Easy</button>
+  <button (click)="selectedDifficulty.set('medium')">Medium</button>
+  <button (click)="selectedDifficulty.set('hard')">Hard</button>
+</div>
 
-    <!-- BASIC INFO -->
-    <div class="form-section">
-      <h3>Basic information</h3>
-
-      <label>Title</label>
-      <input [(ngModel)]="newTrip.title">
-
-      <label>Description</label>
-      <input [(ngModel)]="newTrip.description">
-
-      <label>Price (€)</label>
-      <input type="number" [(ngModel)]="newTrip.price">
-    </div>
-
-    <!-- LOCATION -->
-    <div class="form-section">
-      <h3>Location</h3>
-
-      <label>City</label>
-      <input [(ngModel)]="newTrip.city">
-
-      <label>Country</label>
-      <input [(ngModel)]="newTrip.country">
-    </div>
-
-    <!-- DETAILS -->
-    <div class="form-section">
-      <h3>Details</h3>
-
-      <label>Difficulty</label>
-      <select [(ngModel)]="newTrip.difficulty">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select>
-
-      <label>Max participants</label>
-      <input type="number" [(ngModel)]="newTrip.maxParticipants">
-    </div>
-
-    <!-- DATES -->
-    <div class="form-section">
-      <h3>Dates</h3>
-
-      <label>Start date</label>
-      <input type="date" [(ngModel)]="newTrip.startDate">
-
-      <label>End date</label>
-      <input type="date" [(ngModel)]="newTrip.endDate">
-    </div>
-
-    <!-- EXTRA -->
-    <div class="form-section">
-      <h3>Extra</h3>
-
-      <label>Image URL</label>
-      <input [(ngModel)]="newTrip.pictures[0]">
-
-      <label>Visibility</label>
-      <select [(ngModel)]="newTrip.role">
-        <option value="user">User trip</option>
-        <option value="admin">Admin trip</option>
-      </select>
-    </div>
-
-      <div *ngFor="let stage of newTrip.stages; let i = index">
-        <h4>Stage {{ i + 1 }}</h4>
-        <input [(ngModel)]="stage.title" placeholder="Stage Title">
-        <input [(ngModel)]="stage.description" placeholder="Stage Description">
-        <input type="number" [(ngModel)]="stage.price" placeholder="Stage Price">
-      </div>
-
-      <button (click)="addStage()">Add Stage</button> 
-
-    <button class="save-button" (click)="createTrip()">Save trip</button>
-
-  </div>
-}
 <div class="trip-page">
 
   @for (trip of filteredTrips(); track trip.id) {
 
-    <app-trip-card 
-      [trip]="trip"
-      (cancel)="cancelTrip($event)">
-    </app-trip-card>
+    <div class="trip-card-wrapper">
+
+      <a class="trip-card-link" [routerLink]="['/trips', trip.id]">
+        <div class="trip-card" [class.cancelled]="trip.cancelled">
+
+          <img [src]="trip.pictures?.[0]" class="trip-image" />
+
+          <div class="trip-body">
+
+            <h2 class="trip-title">{{ trip.title }}</h2>
+
+            <p class="trip-description">{{ trip.description }}</p>
+
+            <div class="trip-info">
+              <p><strong>Ticker:</strong> {{ trip.ticker }}</p>
+              <p><strong>Location:</strong> {{ trip.city }}, {{ trip.country }}</p>
+
+              <p>
+                <strong>Difficulty:</strong>
+                <span class="difficulty {{ trip.difficulty }}">
+                  {{ trip.difficulty }}
+                </span>
+              </p>
+            </div>
+
+            <div class="trip-meta">
+              <p class="trip-price">{{ trip.price }} €</p>
+              <p>{{ trip.startDate | date }} → {{ trip.endDate | date }}</p>
+              <p><strong>Available places:</strong> {{ getAvailablePlaces(trip) }}</p>
+            </div>
+
+            @if (trip.cancelled) {
+              <div class="trip-cancelled">
+                This trip has been cancelled
+              </div>
+            }
+
+          </div>
+
+        </div>
+      </a>
+
+      @if (authService.isExplorer() && !trip.cancelled) {
+        <div class="trip-actions">
+          <button class="trip-button" (click)="applyToTrip(trip)">
+            Apply
+          </button>
+        </div>
+      }
+
+      @if (authService.isManager()) {
+        <div class="trip-actions">
+          <button class="trip-button secondary" (click)="editTrip(trip, $event)">
+            Edit
+          </button>
+
+          @if (canCancel(trip)) {
+            <button class="trip-button danger" (click)="cancelTrip(trip, $event)">
+              Cancel trip
+            </button>
+          }
+          @if (!canCancel(trip)) {
+            <button class="trip-button reactiv" (click)="reactivateTrip(trip, $event)">
+              Reactivate
+            </button>
+          }
+        </div>
+      }
+
+    </div>
 
   }
 

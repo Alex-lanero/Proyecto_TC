@@ -2,124 +2,140 @@
   "trips": [
     {
       "id": "1",
-      "version": 0,
-      "ticker": "250318-ABCD",
-      "title": "Mountain Adventure",
-      "description": "Explore the mountains with expert guides.",
-      "price": 120,
-      "city": "Granada",
-      "country": "Spain",
+      "version": 1,
+      "ticker": "240406-ABCD",
+      "title": "Trip to Alps",
+      "description": "Amazing mountain experience",
+      "price": 10,
+      "city": "Geneva",
+      "country": "Switzerland",
       "difficulty": "medium",
       "maxParticipants": 10,
-      "startDate": "2025-06-01",
-      "endDate": "2025-06-05",
-      "pictures": [
-        "/images/mountain.jpg"
+      "startDate": "2026-06-10T00:00:00.000Z",
+      "endDate": "2026-06-20T00:00:00.000Z",
+      "managerId": "1775504001028",
+      "stages": [
+        {
+          "id": "1775508539830",
+          "version": 1,
+          "title": "prueba 2",
+          "description": "lj  lholiuh  ii ",
+          "price": 10
+        }
       ],
-      "cancelled": false,
-      "role": "user"
+      "pictures": [
+        "https://picsum.photos/400/200"
+      ],
+      "cancelled": false
     },
     {
       "id": "2",
-      "version": 0,
-      "ticker": "250401-EFGH",
-      "title": "Beach Escape",
-      "description": "Relax by the sea and enjoy the sun.",
-      "price": 90,
-      "city": "Malaga",
-      "country": "Spain",
-      "difficulty": "easy",
-      "maxParticipants": 20,
-      "startDate": "2025-07-10",
-      "endDate": "2025-07-15",
-      "pictures": [
-        "/images/beach.jpg"
-      ],
-      "cancelled": false,
-      "role": "user"
-    },
-    {
-      "id": "3",
-      "version": 0,
-      "ticker": "250512-IJKL",
-      "title": "City Break",
-      "description": "Discover urban life and culture.",
-      "price": 150,
-      "city": "Madrid",
-      "country": "Spain",
-      "difficulty": "easy",
-      "maxParticipants": 15,
-      "startDate": "2025-08-01",
-      "endDate": "2025-08-04",
-      "pictures": [
-        "/images/city.jpg"
-      ],
-      "cancelled": false,
-      "role": "user"
-    },
-    {
-      "id": "4",
-      "version": 0,
-      "ticker": "250620-MNOP",
-      "title": "Safari Adventure",
-      "description": "Experience wildlife in its natural habitat.",
-      "price": 300,
-      "city": "Nairobi",
-      "country": "Kenya",
+      "version": 1,
+      "ticker": "240406-EFGH",
+      "title": "Sahara Adventure",
+      "description": "Explore the desert",
+      "price": 900,
+      "city": "Marrakesh",
+      "country": "Morocco",
       "difficulty": "hard",
       "maxParticipants": 8,
-      "startDate": "2025-09-10",
-      "endDate": "2025-09-20",
-      "pictures": [
-        "/images/safari.jpg"
-      ],
+      "startDate": "2026-07-01",
+      "endDate": "2026-07-10",
+      "managerId": "1775504001028",
       "cancelled": false,
-      "role": "user"
+      "pictures": [
+        "https://picsum.photos/401/200"
+      ]
     },
     {
-      "id": "5",
-      "version": 0,
-      "ticker": "250701-QRST",
-      "title": "Snow Adventure",
-      "description": "Enjoy skiing and winter sports.",
-      "price": 200,
-      "city": "Andorra",
-      "country": "Andorra",
-      "difficulty": "medium",
-      "maxParticipants": 12,
-      "startDate": "2025-12-01",
-      "endDate": "2025-12-07",
-      "pictures": [
-        "/images/snow.jpg"
+      "id": "1775499730232",
+      "version": 1,
+      "ticker": "260406-LMTA",
+      "title": "Prueba",
+      "description": "laskdjfolasj ñlasdjflksaj flñj lñkasjdfl ajsñdlfj ñlkajsd f",
+      "price": 12,
+      "city": "Madrid",
+      "country": "España",
+      "difficulty": "hard",
+      "maxParticipants": 5,
+      "startDate": "2026-04-22T00:00:00.000Z",
+      "endDate": "2026-05-29T00:00:00.000Z",
+      "managerId": "2",
+      "stages": [
+        {
+          "id": "1775499705136",
+          "version": 1,
+          "title": "prueba 2",
+          "description": "dasfs asa fasd as ",
+          "price": 5
+        },
+        {
+          "id": "1775499720168",
+          "version": 1,
+          "title": "prueba 3",
+          "description": "asadf asdf ",
+          "price": 7
+        }
       ],
       "cancelled": false,
-      "role": "admin"
+      "pictures": [
+        "https://picsum.photos/402/200"
+      ]
     }
   ],
   "applications": [
     {
-      "id": "1",
-      "tripId": "1",
-      "explorerId": "test@acme.com",
+      "id": "1775496340491",
+      "version": 1,
+      "tripId": "2",
+      "explorerId": "a",
+      "moment": "2026-04-06T17:25:40.491Z",
+      "status": "ACCEPTED",
+      "comments": ""
+    },
+    {
+      "id": "1775498205157",
+      "version": 1,
+      "tripId": "2",
+      "explorerId": "explorer@test.com",
+      "moment": "2026-04-06T17:56:45.157Z",
       "status": "REJECTED",
-      "comments": "Looking forward to this trip!",
-      "createdAt": "2026-03-18T00:00:00Z"
+      "comments": ""
+    },
+    {
+      "id": "1775498213741",
+      "version": 1,
+      "tripId": "1",
+      "explorerId": "explorer@test.com",
+      "moment": "2026-04-06T17:56:53.741Z",
+      "status": "ACCEPTED",
+      "comments": ""
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "email": "explorer@test.com",
+      "password": "1234",
+      "role": "explorer"
     },
     {
       "id": "2",
-      "tripId": "2",
-      "explorerId": "test@acme.com",
-      "status": "REJECTED",
-      "comments": "Looking forward to this trip!",
-      "createdAt": "2026-03-18T00:00:00Z"
+      "email": "manager@test.com",
+      "password": "1234",
+      "role": "manager"
     },
     {
       "id": "3",
-      "tripId": "3",
-      "explorerId": "test@acme.com",
-      "status": "REJECTED",
-      "comments": "Looking forward to this trip!",
-      "createdAt": "2026-03-18T00:00:00Z"
+      "email": "admin@test.com",
+      "password": "1234",
+      "role": "administrator"
+    },
+    {
+      "id": "1775504001028",
+      "email": "manager2@test.com",
+      "password": "1234",
+      "role": "manager"
     }
   ]
 }

@@ -1,41 +1,65 @@
-// src/app/features/trips/manager-applications/manager-applications.component.ts
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { ApplicationService } from '../../../core/services/application.service';
-import { Application } from '../../trips/application.model';  // Ensure you have this model
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ApplicationService } from '../../../core/services/application.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { Application } from '../models/application.model';
+import { TripService } from '../../../core/services/trip.service';
+import { Trip } from '../models/trip.model';
 
 @Component({
   selector: 'app-manager-applications',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './manager-applications.component.html',
-  styleUrls: ['./manager-applications.component.scss'],
-  imports: [CommonModule]
+  styleUrl: './manager-applications.component.scss'
 })
 export class ManagerApplicationsComponent implements OnInit {
-  private applicationService = inject(ApplicationService);
 
-  applications = signal<Application[]>([]); // Usamos signal() para almacenar las applications
-  loading = true;
+  applications = signal<Application[]>([]);
+  trips = signal<Trip[]>([]);
 
-  ngOnInit(): void {
-    this.loadApplications();
+  constructor(
+    private applicationService: ApplicationService,
+    private tripService: TripService,
+    private authService: AuthService
+  ) {
+    this.applications = this.applicationService.applications;
+    this.trips = this.tripService.trips;
   }
 
-  loadApplications(): void {
-    this.applicationService.getAllApplications().subscribe(data => {
-      this.applications.set(data);  // Cargamos las applications en el signal
-      this.loading = false;  // Actualizamos el estado a 'false' cuando los datos se cargan
-    });
+  ngOnInit() {
+    this.applicationService.loadApplications();
+    this.tripService.loadTrips();
   }
 
-  acceptApplication(application: Application): void {
-    this.applicationService.updateApplicationStatus(application.id, 'ACCEPTED').subscribe(() => {
-      application.status = 'ACCEPTED';  // Actualizamos el estado en la UI inmediatamente
-    });
+  reject(app: Application) {
+    this.applicationService.updateStatus(app.id, 'REJECTED');
   }
 
-  rejectApplication(application: Application): void {
-    this.applicationService.updateApplicationStatus(application.id, 'REJECTED').subscribe(() => {
-      application.status = 'REJECTED';  // Actualizamos el estado en la UI inmediatamente
-    });
+  markDue(app: Application) {
+    this.applicationService.updateStatus(app.id, 'DUE');
   }
+
+  getTripTitle(tripId: string): string {
+    const trip = this.trips().find(t => t.id === tripId);
+    return trip ? trip.title : 'Unknown trip';
+  }
+
+  filteredApplications = computed(() => {
+
+    const managerId = this.authService.currentUser()?.id;
+
+    // 1. coger trips del manager
+    const myTrips = this.trips().filter(
+      t => t.managerId === managerId
+    );
+
+    const myTripIds = myTrips.map(t => t.id);
+
+    // 2. filtrar applications de esos trips
+    return this.applications().filter(
+      app => myTripIds.includes(app.tripId)
+    );
+
+  });
 }

@@ -1,8 +1,11 @@
-import { Entity } from "../../shared/models/entity.model";
-import { Stage } from "./stage.model";
+import { Entity } from '../../../shared/models/entity.model';
+import { Stage } from './stage.model';
+
+export type Difficulty = 'easy' | 'medium' | 'hard';
 
 export interface Trip extends Entity {
   ticker: string;
+
   title: string;
   description: string;
 
@@ -15,14 +18,15 @@ export interface Trip extends Entity {
 
   maxParticipants: number;
 
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
+
+  managerId: string;
+
+  stages?: Stage[];
 
   pictures?: string[];
 
   cancelled?: boolean;
-  cancellationReason?: string;
-
-  role: 'user' | 'admin';
-  stages: Stage[];
+  cancelReason?: string;
 }
