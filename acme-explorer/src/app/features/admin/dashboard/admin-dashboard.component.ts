@@ -5,6 +5,7 @@ import { ApplicationService } from '../../../core/services/application.service';
 import { Trip } from '../../trips/models/trip.model';
 import { Application } from '../../trips/models/application.model';
 import { HttpClient } from '@angular/common/http';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -23,7 +24,8 @@ export class AdminDashboardComponent implements OnInit {
   constructor(
     private tripService: TripService,
     private applicationService: ApplicationService,
-    private http: HttpClient
+    private http: HttpClient,
+    private notificationService: NotificationService
   ) {
     this.trips = this.tripService.trips;
     this.applications = this.applicationService.applications;
@@ -56,7 +58,7 @@ export class AdminDashboardComponent implements OnInit {
     const password = this.newManagerPassword();
 
     if (!email || !password) {
-      alert('Fill all fields');
+      this.notificationService.show('Fill all fields', 'error');
       return;
     }
 
@@ -69,7 +71,7 @@ export class AdminDashboardComponent implements OnInit {
 
     this.http.post('http://localhost:3000/users', newUser)
       .subscribe(() => {
-        alert('Manager created');
+        this.notificationService.show('Manager created', 'success');
 
         this.newManagerEmail.set('');
         this.newManagerPassword.set('');

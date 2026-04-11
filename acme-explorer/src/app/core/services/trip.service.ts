@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Trip } from '../../features/trips/models/trip.model';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class TripService {
 
   trips = signal<Trip[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private notificationService: NotificationService) {}
 
   loadTrips() {
     this.http.get<Trip[]>(this.apiUrl).subscribe(data => {
@@ -27,7 +28,7 @@ export class TripService {
     const diffDays = (start.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
 
     if (diffDays < 7) {
-      alert('Cannot cancel trip less than 7 days before start');
+      this.notificationService.show('Cannot cancel trip less than 7 days before start', 'error');
       return;
     }
 

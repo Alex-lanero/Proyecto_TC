@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Application } from '../../features/trips/models/application.model';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class ApplicationService {
 
   applications = signal<Application[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private notificationService: NotificationService) {}
 
   loadApplications() {
     this.http.get<Application[]>(this.apiUrl).subscribe(data => {
@@ -28,7 +29,7 @@ export class ApplicationService {
     );
 
     if (existing) {
-      alert('You already applied to this trip');
+      this.notificationService.show('You already applied to this trip', 'error');
       return;
     }
 

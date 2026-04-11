@@ -58,7 +58,7 @@
       "country": "España",
       "difficulty": "hard",
       "maxParticipants": 5,
-      "startDate": "2026-04-22T00:00:00.000Z",
+      "startDate": "2026-04-12T00:00:00.000Z",
       "endDate": "2026-05-29T00:00:00.000Z",
       "managerId": "2",
       "stages": [
@@ -77,10 +77,10 @@
           "price": 7
         }
       ],
-      "cancelled": false,
       "pictures": [
         "https://picsum.photos/402/200"
-      ]
+      ],
+      "cancelled": false
     }
   ],
   "applications": [

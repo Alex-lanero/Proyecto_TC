@@ -33,7 +33,19 @@
 
           <div class="trip-body">
 
+            <div class="badges">
+              @for (badge of getTripBadges(trip); track badge) {
+                <span class="badge" [class]="badge.toLowerCase()">
+                  {{ badge }}
+                </span>
+              }
+            </div>
+
             <h2 class="trip-title">{{ trip.title }}</h2>
+
+            <p class="countdown">
+              {{ getCountdown(trip.startDate) }}
+            </p>
 
             <p class="trip-description">{{ trip.description }}</p>
 
@@ -70,9 +82,9 @@
         <div class="trip-actions">
         @if (!hasApplied(trip.id)) {
 
-          <button class="trip-button" (click)="applyToTrip(trip)">
-            Apply
-          </button>
+          @if (canApply(trip)) {
+            <button class="trip-button"  (click)="applyToTrip(trip)">Apply</button>
+          }
 
         } @else{
 

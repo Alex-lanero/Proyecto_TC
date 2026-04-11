@@ -5,6 +5,7 @@ import { Application } from '../models/application.model';
 import { TripService } from '../../../core/services/trip.service';
 import { Trip } from '../models/trip.model';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-manager-applications',
@@ -21,7 +22,8 @@ export class ManagerApplicationsComponent implements OnInit {
   constructor(
     private applicationService: ApplicationService,
     private tripService: TripService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {
     this.applications = this.applicationService.applications;
     this.trips = this.tripService.trips;
@@ -50,7 +52,7 @@ export class ManagerApplicationsComponent implements OnInit {
     const trip = this.trips().find(t => t.id === app.tripId);
 
     if (trip?.managerId !== this.authService.currentUser()?.id) {
-      alert('Not your trip');
+      this.notificationService.show('Not your trip', 'error');
       return;
     }
 
@@ -61,7 +63,7 @@ export class ManagerApplicationsComponent implements OnInit {
     const trip = this.trips().find(t => t.id === app.tripId);
 
     if (trip?.managerId !== this.authService.currentUser()?.id) {
-      alert('Not your trip');
+      this.notificationService.show('Not your trip', 'error');
       return;
     }
 

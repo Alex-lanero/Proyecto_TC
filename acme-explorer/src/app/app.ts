@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 
 import { HeaderComponent } from './shared/header/header';
 import { FooterComponent } from './shared/footer/footer';
+import { NotificationComponent } from './shared/notification/notification/notification.component';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,8 @@ import { FooterComponent } from './shared/footer/footer';
   imports: [
     RouterOutlet,
     HeaderComponent,
-    FooterComponent 
+    FooterComponent,
+    NotificationComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'

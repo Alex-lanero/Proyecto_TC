@@ -6,6 +6,7 @@ import { TripService } from '../../../core/services/trip.service';
 import { FavouriteList } from '../models/favourite-list.model';
 import { Trip } from '../models/trip.model';
 import { RouterLink } from '@angular/router';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-favourites',
@@ -24,9 +25,9 @@ export class FavouritesComponent implements OnInit {
   constructor(
     private favouriteService: FavouriteService,
     public authService: AuthService,
-    private tripService: TripService
+    private tripService: TripService,
+    private notificationService: NotificationService
   ) {
-    // 🔥 AQUÍ (no arriba)
     this.favouriteLists = this.favouriteService.favouriteLists;
     this.trips = this.tripService.trips;
   }
@@ -44,7 +45,7 @@ export class FavouritesComponent implements OnInit {
     const name = this.newListName().trim();
 
     if (!email || !name) {
-      alert('Enter a list name');
+      this.notificationService.show('Enter a list name', 'error');
       return;
     }
 

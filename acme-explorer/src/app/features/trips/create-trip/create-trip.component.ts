@@ -6,6 +6,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Stage } from '../models/stage.model';
 import { Trip } from '../models/trip.model';
 import { ActivatedRoute } from '@angular/router';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-create-trip',
@@ -19,7 +20,8 @@ export class CreateTripComponent implements OnInit{
   constructor(
     private tripService: TripService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notificationService: NotificationService
   ) {}
 
   // 🔹 campos
@@ -166,10 +168,10 @@ export class CreateTripComponent implements OnInit{
 
     if (this.isEditMode()) {
       this.tripService.updateTrip(trip);
-      alert('Trip updated');
+      this.notificationService.show('Trip updated', 'success');
     } else {
       this.tripService.createTrip(trip);
-      alert('Trip created');
+      this.notificationService.show('Trip created', 'success');
     }
   }
 }

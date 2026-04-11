@@ -8,6 +8,7 @@ import { TripService } from '../../../core/services/trip.service';
 import { ApplicationService } from '../../../core/services/application.service';
 import { Application } from '../models/application.model';
 import { FavouriteService } from '../../../core/services/favourite.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-trip-display',
@@ -32,7 +33,8 @@ export class TripDisplay implements OnInit {
     private tripService: TripService,
     private applicationService: ApplicationService,
     private router: Router,
-    public favouriteService: FavouriteService
+    public favouriteService: FavouriteService,
+    private notificationService: NotificationService
   ) {
     this.trips = this.tripService.trips;
     this.applications = this.applicationService.applications;
@@ -101,14 +103,14 @@ export class TripDisplay implements OnInit {
 
   applyToTrip(trip: Trip) {
     if (trip.cancelled) {
-      alert('This trip is cancelled');
+      this.notificationService.show('This trip is cancelled', 'error');
       return;
     }
 
     const now = new Date();
 
     if (new Date(trip.startDate) < now) {
-      alert('Trip already started');
+      this.notificationService.show('Trip already started', 'error');
       return;
     }
 
@@ -143,7 +145,7 @@ export class TripDisplay implements OnInit {
 
     const email = this.authService.currentUser()?.email;
     if (!email) {
-      alert('You must be logged in as explorer');
+      this.notificationService.show('You must be logged in as explorer', 'error');
       return;
     }
 
@@ -152,13 +154,13 @@ export class TripDisplay implements OnInit {
     const lists = this.favouriteService.favouriteLists();
 
     if (lists.length === 0) {
-      alert('Create a favourite list first');
+      this.notificationService.show('Create a favourite list first', 'error');
       return;
     }
 
     // MVP: añade a la primera lista
     this.favouriteService.addTripToList(email, lists[0].id, trip.id);
-    alert('Trip added to favourites');
+    this.notificationService.show('Trip added to favourites', 'success');
   }
 
   isFavourite(tripId: string): boolean {
@@ -183,7 +185,7 @@ export class TripDisplay implements OnInit {
 
     this.selectedTripForFav.set(null);
 
-    alert('Added to favourites');
+    this.notificationService.show('Added to favourites', 'success');
   }
 
   hasApplied(tripId: string): boolean {
@@ -195,5 +197,63 @@ export class TripDisplay implements OnInit {
       app.explorerId === email &&
       app.status !== 'REJECTED'
     );
+  }
+
+  canApply(trip: any): boolean {
+
+    const user = this.authService.currentUser();
+
+    if (!user) return false;
+
+    if (trip.cancelled) return false;
+
+    if (new Date(trip.startDate) < new Date()) return false;
+
+    const alreadyApplied = this.applicationService.applications()
+      .some(app =>
+        app.tripId === trip.id &&
+        app.explorerId === user.email
+      );
+
+    return !alreadyApplied;
+  }
+
+  getCountdown(startDate: string | Date): string {
+
+    const now = new Date();
+    const start = new Date(startDate);
+
+    const diff = start.getTime() - now.getTime();
+
+    if (diff <= 0) return 'Started';
+
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+    return `Starts in ${days} day${days > 1 ? 's' : ''}`;
+  }
+
+  getTripBadges(trip: any): string[] {
+
+    const badges: string[] = [];
+
+    // FULL
+    if (trip.maxParticipants <= 0) {
+      badges.push('FULL');
+    }
+
+    // CANCELLED
+    if (trip.cancelled) {
+      badges.push('CANCELLED');
+    }
+
+    // COMING SOON (empieza en menos de 3 días)
+    const diff = new Date(trip.startDate).getTime() - new Date().getTime();
+    const days = diff / (1000 * 60 * 60 * 24);
+
+    if (days > 0 && days <= 3) {
+      badges.push('COMING SOON');
+    }
+
+    return badges;
   }
 }

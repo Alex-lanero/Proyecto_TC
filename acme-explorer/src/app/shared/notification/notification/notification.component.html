@@ -1,0 +1,5 @@
+@if (notification.message()) {
+  <div class="toast" [class]="notification.type()">
+    {{ notification.message() }}
+  </div>
+}

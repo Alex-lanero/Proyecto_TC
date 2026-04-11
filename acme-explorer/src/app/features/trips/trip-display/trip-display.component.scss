@@ -281,3 +281,37 @@
   font-size: 12px;
   font-weight: bold;
 }
+
+.countdown {
+  font-size: 0.85rem;
+  color: #3498db;
+  font-weight: 600;
+}
+
+.badges {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: white;
+}
+
+/* colores */
+
+.full {
+  background: #7f8c8d;
+}
+
+.cancelled {
+  background: #e74c3c;
+}
+
+.coming {
+  background: #f39c12;
+}

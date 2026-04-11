@@ -5,10 +5,16 @@
   <h3>Basic Info</h3>
 
   <input
-        placeholder="Title"
-        [value]="title()"
-        (input)="title.set($any($event.target).value)"
-    />
+    type="text"
+    placeholder="Title"
+    [ngModel]="title()"
+    (ngModelChange)="title.set($event)"
+    required
+  />
+
+  @if (!title()) {
+    <p class="error">Title is required</p>
+  }
 
     <textarea
         placeholder="Description"
@@ -44,11 +50,16 @@
     </select>
 
     <input
-        type="number"
-        placeholder="Max participants"
-        [value]="maxParticipants()"
-        (input)="maxParticipants.set(+$any($event.target).value)"
+      type="number"
+      placeholder="Max participants"
+      [ngModel]="maxParticipants()"
+      (ngModelChange)="maxParticipants.set(+$event)"
+      required
     />
+
+    @if (maxParticipants() <= 0) {
+      <p class="error">Must be greater than 0</p>
+    }
 
   <input
     type="date"
