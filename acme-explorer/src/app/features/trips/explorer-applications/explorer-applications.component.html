@@ -36,7 +36,10 @@
             <div class="actions">
 
               @if (app.status === 'DUE') {
-                <button class="pay" (click)="pay(app)">
+                <button 
+                  (click)="goToPayment(app)"
+                  class="pay"
+                >
                   Pay
                 </button>
               }

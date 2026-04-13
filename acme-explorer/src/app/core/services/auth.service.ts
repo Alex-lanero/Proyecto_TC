@@ -2,6 +2,8 @@ import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../shared/models/user.model';
 import { UserRole } from '../../shared/models/user-role.type';
+import { isPlatformBrowser } from '@angular/common';
+import { inject, PLATFORM_ID } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +11,8 @@ import { UserRole } from '../../shared/models/user-role.type';
 export class AuthService {
 
   private apiUrl = 'http://localhost:3000/users';
+
+  private platformId = inject(PLATFORM_ID);
 
   currentUser = signal<User | null>(null);
   role = signal<UserRole>('anonymous');
@@ -20,7 +24,21 @@ export class AuthService {
   isManager = computed(() => this.role() === 'manager');
   isAdministrator = computed(() => this.role() === 'administrator');
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+
+    if (isPlatformBrowser(this.platformId)) {
+
+      const storedUser = localStorage.getItem('user');
+
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+
+        this.currentUser.set(user);
+        this.role.set(user.role);
+      }
+
+    }
+  }
 
   login(email: string, password: string): Promise<boolean> {
 
@@ -34,6 +52,10 @@ export class AuthService {
 
             this.currentUser.set(user);
             this.role.set(user.role);
+
+            if (isPlatformBrowser(this.platformId)) {
+              localStorage.setItem('user', JSON.stringify(user));
+            }
 
             resolve(true);
           } else {
@@ -66,5 +88,9 @@ export class AuthService {
   logout() {
     this.currentUser.set(null);
     this.role.set('anonymous');
+
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('user');
+    }
   }
 }

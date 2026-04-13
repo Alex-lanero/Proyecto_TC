@@ -1,0 +1,39 @@
+<div class="payment-container">
+
+  <div class="payment-card">
+
+    <h2>Complete Payment</h2>
+
+    <p>Total amount:</p>
+    <h3>{{ amount() }} €</h3>
+
+    <!-- 🔥 PAYPAL SOLO EN NAVEGADOR -->
+    @if (isBrowser) {
+      <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+    }
+
+    <!-- SUCCESS -->
+    @if (paymentSuccess()) {
+      <div class="result success">
+        ✅ Payment successful!
+      </div>
+    }
+
+    <!-- ERROR -->
+    @if (paymentError()) {
+      <div class="result error">
+        ❌ Payment failed. Try again.
+      </div>
+    }
+
+  </div>
+
+  <!-- LOADER -->
+  @if (isLoading()) {
+    <div class="loader-overlay">
+      <div class="spinner"></div>
+      <p>Processing payment...</p>
+    </div>
+  }
+
+</div>

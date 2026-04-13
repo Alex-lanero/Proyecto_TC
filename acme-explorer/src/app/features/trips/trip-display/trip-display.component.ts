@@ -256,4 +256,29 @@ export class TripDisplay implements OnInit {
 
     return badges;
   }
+
+  getApplication(tripId: string) {
+    const user = this.authService.currentUser();
+
+    return this.applicationService.applications()
+      .find(app =>
+        app.tripId === tripId &&
+        app.explorerId === user?.email
+      );
+  }
+
+  getApplicationStatus(tripId: string): string | null {
+    const app = this.getApplication(tripId);
+    return app ? app.status : null;
+  }
+
+  goToPaymentFromTrip(trip: any, event: Event) {
+    event.stopPropagation();
+
+    const app = this.getApplication(trip.id);
+
+    if (!app) return;
+
+    this.router.navigate(['/payment', app.id, trip.price]);
+  }
 }

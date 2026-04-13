@@ -58,7 +58,7 @@
       "country": "España",
       "difficulty": "hard",
       "maxParticipants": 5,
-      "startDate": "2026-04-12T00:00:00.000Z",
+      "startDate": "2026-04-15T00:00:00.000Z",
       "endDate": "2026-05-29T00:00:00.000Z",
       "managerId": "2",
       "stages": [
@@ -103,15 +103,6 @@
       "comments": ""
     },
     {
-      "id": "1775498213741",
-      "version": 1,
-      "tripId": "1",
-      "explorerId": "explorer@test.com",
-      "moment": "2026-04-06T17:56:53.741Z",
-      "status": "ACCEPTED",
-      "comments": ""
-    },
-    {
       "id": "1775573994335",
       "version": 1,
       "tripId": "1",
@@ -121,12 +112,12 @@
       "comments": ""
     },
     {
-      "id": "1775581074513",
+      "id": "1776100347011",
       "version": 1,
-      "tripId": "2",
+      "tripId": "1775499730232",
       "explorerId": "explorer@test.com",
-      "moment": "2026-04-07T16:57:54.513Z",
-      "status": "ACCEPTED",
+      "moment": "2026-04-13T17:12:27.011Z",
+      "status": "DUE",
       "comments": ""
     }
   ],

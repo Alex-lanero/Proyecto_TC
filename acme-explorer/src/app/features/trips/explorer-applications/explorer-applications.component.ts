@@ -5,6 +5,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Application } from '../models/application.model';
 import { TripService } from '../../../core/services/trip.service';
 import { Trip } from '../models/trip.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-explorer-applications',
@@ -23,7 +24,8 @@ export class ExplorerApplicationsComponent implements OnInit {
   constructor(
     private applicationService: ApplicationService,
     private tripService: TripService,
-    public authService: AuthService
+    public authService: AuthService,
+    private router: Router
   ) {
     this.applications = this.applicationService.applications;
     this.trips = this.tripService.trips;
@@ -60,12 +62,17 @@ export class ExplorerApplicationsComponent implements OnInit {
     return trip ? trip.title : 'Unknown trip';
   }
 
-  pay(app: Application) {
-    this.applicationService.payApplication(app.id);
+  goToPayment(app: any) {
+    this.router.navigate(['/payment', app.id, this.getTripPrice(app.tripId)]);
   }
 
   cancel(app: Application) {
     this.applicationService.cancelApplication(app.id);
+  }
+
+  getTripPrice(tripId: string): number {
+    const trip = this.tripService.trips().find(t => t.id === tripId);
+    return trip?.price || 0;
   }
 
 }

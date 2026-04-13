@@ -65,4 +65,12 @@ export class ApplicationService {
       this.loadApplications();
     });
   }
+
+  pay(applicationId: string) {
+    this.http.patch(`http://localhost:3000/applications/${applicationId}`, {
+      status: 'ACCEPTED'
+    }).subscribe(() => {
+      this.loadApplications();
+    });
+  }
 }

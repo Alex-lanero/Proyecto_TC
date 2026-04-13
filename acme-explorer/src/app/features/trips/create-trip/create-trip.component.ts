@@ -132,8 +132,12 @@ export class CreateTripComponent implements OnInit{
     return `${y}${m}${d}-${random}`;
   }
 
-  // 🔥 submit
   createTrip() {
+
+      if (!this.isFormValid()) {
+        this.notificationService.show('Please fill all required fields', 'error');
+        return;
+      }
 
     const trip: Trip = {
       id: this.isEditMode() ? this.editingTripId! : Date.now().toString(),
@@ -173,5 +177,25 @@ export class CreateTripComponent implements OnInit{
       this.tripService.createTrip(trip);
       this.notificationService.show('Trip created', 'success');
     }
+  }
+
+  hasUnsavedChanges(): boolean {
+    return !!this.title() || 
+          !!this.description() || 
+          this.stages().length > 0;
+  }
+
+  isFormValid(): boolean {
+    return this.title().trim() !== '' &&
+          this.description().trim() !== '' &&
+          this.city().trim() !== '' &&
+          this.country().trim() !== '' &&
+          this.startDate() !== '' &&
+          this.endDate() !== '' &&
+          this.stages().length > 0 &&
+          this.stages().every(s => 
+            s.title.trim() !== '' &&
+            s.price > 0
+          );
   }
 }

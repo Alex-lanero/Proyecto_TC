@@ -113,6 +113,11 @@
 
   <h3>Total price: {{ totalPrice() }} €</h3>
 
-  <button (click)="createTrip()">Create Trip</button>
+  <button 
+    (click)="createTrip()" 
+    [disabled]="!isFormValid()"
+  >
+    {{ isEditMode() ? 'Update Trip' : 'Create Trip' }}
+  </button>
 
 </div>

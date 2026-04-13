@@ -80,18 +80,46 @@
 
       @if (authService.isExplorer() && !trip.cancelled) {
         <div class="trip-actions">
-        @if (!hasApplied(trip.id)) {
+        <!-- NO APPLICATION -->
+        @if (!getApplication(trip.id)) {
 
           @if (canApply(trip)) {
-            <button class="trip-button"  (click)="applyToTrip(trip)">Apply</button>
+            <button class="trip-button" (click)="applyToTrip(trip)">
+              Apply
+            </button>
           }
 
-        } @else{
+        }
 
-          <span class="applied-tag">
-            ✔ Already applied
+        <!-- PENDING -->
+        @if (getApplicationStatus(trip.id) === 'PENDING') {
+          <span class="applied-tag pending">
+            🟡 Pending
           </span>
+        }
 
+        <!-- DUE -->
+        @if (getApplicationStatus(trip.id) === 'DUE') {
+          <button 
+            class="trip-button pay"
+            (click)="goToPaymentFromTrip(trip, $event)"
+          >
+            💳 Pay now
+          </button>
+        }
+
+        <!-- ACCEPTED -->
+        @if (getApplicationStatus(trip.id) === 'ACCEPTED') {
+          <span class="applied-tag accepted">
+            ✅ Accepted
+          </span>
+        }
+
+        <!-- REJECTED -->
+        @if (getApplicationStatus(trip.id) === 'REJECTED') {
+          <span class="applied-tag rejected">
+            ❌ Rejected
+          </span>
         }
         @if (!isFavourite(trip.id)) {
 

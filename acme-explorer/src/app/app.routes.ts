@@ -9,6 +9,8 @@ import { CreateTripComponent } from './features/trips/create-trip/create-trip.co
 import { TripDetailComponent } from './features/trips/trip-detail/trip-detail.component'
 import { FavouritesComponent } from './features/trips/favourites/favourites.component';
 import { AcceptedTripsComponent } from './features/trips/accepted-trips/accepted-trips.component';
+import { pendingChangesGuard } from './core/guards/pending-changes.guard';
+import { PaymentComponent } from './features/trips/payment/payment.component';
 
 // (lo crearemos luego)
 import { AdminDashboardComponent } from './features/admin/dashboard/admin-dashboard.component';
@@ -26,11 +28,23 @@ export const routes: Routes = [
   // 🔹 EXPLORER
   { path: 'explorer/applications', component: ExplorerApplicationsComponent },
   { path: 'explorer/trips', component: AcceptedTripsComponent },
+  {
+    path: 'payment/:id/:amount',
+    component: PaymentComponent
+  },
 
   // 🔹 MANAGER
   { path: 'manager/applications', component: ManagerApplicationsComponent },
-  { path: 'manager/create-trip', component: CreateTripComponent },
-  { path: 'manager/edit-trip/:id', component: CreateTripComponent },
+  {
+    path: 'manager/create-trip',
+    component: CreateTripComponent,
+    canDeactivate: [pendingChangesGuard]
+  },
+  {
+    path: 'manager/edit-trip/:id',
+    component: CreateTripComponent,
+    canDeactivate: [pendingChangesGuard]
+  },
 
   // 🔹 ADMIN
   { path: 'admin/dashboard', component: AdminDashboardComponent },
