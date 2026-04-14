@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FavouriteService } from '../../../core/services/favourite.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -36,7 +36,7 @@ export class FavouritesComponent implements OnInit {
     const email = this.authService.currentUser()?.email;
     if (!email) return;
 
-    this.favouriteService.load(email);
+    this.favouriteService.loadLists(email); // ✅ FIX
     this.tripService.loadTrips();
   }
 
@@ -49,7 +49,7 @@ export class FavouritesComponent implements OnInit {
       return;
     }
 
-    this.favouriteService.createList(email, name);
+    this.favouriteService.createList(name, email); // ✅ FIX
     this.newListName.set('');
   }
 
@@ -57,7 +57,7 @@ export class FavouritesComponent implements OnInit {
     const email = this.authService.currentUser()?.email;
     if (!email) return;
 
-    this.favouriteService.deleteList(email, listId);
+    this.favouriteService.deleteList(listId, email); // ✅ FIX
   }
 
   getTripsForList(list: FavouriteList): Trip[] {
@@ -68,6 +68,6 @@ export class FavouritesComponent implements OnInit {
     const email = this.authService.currentUser()?.email;
     if (!email) return;
 
-    this.favouriteService.removeTripFromList(email, listId, tripId);
+    this.favouriteService.removeTripFromList(listId, tripId, email); // ✅ FIX
   }
 }

@@ -112,12 +112,12 @@
       "comments": ""
     },
     {
-      "id": "1776100347011",
+      "id": "1776183949786",
       "version": 1,
       "tripId": "1775499730232",
       "explorerId": "explorer@test.com",
-      "moment": "2026-04-13T17:12:27.011Z",
-      "status": "DUE",
+      "moment": "2026-04-14T16:25:49.786Z",
+      "status": "ACCEPTED",
       "comments": ""
     }
   ],
@@ -145,6 +145,17 @@
       "email": "manager2@test.com",
       "password": "1234",
       "role": "manager"
+    }
+  ],
+  "favouriteLists": [
+    {
+      "id": "1776185141482",
+      "name": "MyTrips",
+      "explorerId": "explorer@test.com",
+      "tripIds": [
+        "1",
+        "2"
+      ]
     }
   ]
 }

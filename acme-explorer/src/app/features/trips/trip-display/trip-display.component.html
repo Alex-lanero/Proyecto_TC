@@ -169,20 +169,33 @@
 
       @if (authService.isManager()) {
         <div class="trip-actions">
+
+          <!-- EDIT -->
           <button class="trip-button secondary" (click)="editTrip(trip, $event)">
             Edit
           </button>
 
-          @if (canCancel(trip)) {
+          <!-- CANCEL -->
+          @if (!trip.cancelled && canCancel(trip)) {
             <button class="trip-button danger" (click)="cancelTrip(trip, $event)">
               Cancel trip
             </button>
           }
-          @if (!canCancel(trip)) {
+
+          <!-- NO SE PUEDE CANCELAR -->
+          @if (!trip.cancelled && !canCancel(trip)) {
+            <button class="trip-button disabled" disabled>
+              Cannot cancel (< 7 days)
+            </button>
+          }
+
+          <!-- REACTIVATE -->
+          @if (trip.cancelled) {
             <button class="trip-button reactiv" (click)="reactivateTrip(trip, $event)">
               Reactivate
             </button>
           }
+
         </div>
       }
 

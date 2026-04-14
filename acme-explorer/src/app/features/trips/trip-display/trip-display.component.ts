@@ -46,7 +46,7 @@ export class TripDisplay implements OnInit {
 
     const email = this.authService.currentUser()?.email;
     if (email) {
-      this.favouriteService.load(email);
+      this.favouriteService.loadLists(email);
     }
   }
 
@@ -63,9 +63,7 @@ export class TripDisplay implements OnInit {
     }
 
     if (this.selectedDifficulty() !== 'all') {
-      trips = trips.filter(
-        t => t.difficulty === this.selectedDifficulty()
-      );
+      trips = trips.filter(t => t.difficulty === this.selectedDifficulty());
     }
 
     if (this.searchTerm().trim() !== '') {
@@ -84,11 +82,10 @@ export class TripDisplay implements OnInit {
   });
 
   getAvailablePlaces(trip: Trip): number {
-    const acceptedApplications = this.applications().filter(
+    const accepted = this.applications().filter(
       app => app.tripId === trip.id && app.status === 'ACCEPTED'
     );
-
-    return trip.maxParticipants - acceptedApplications.length;
+    return trip.maxParticipants - accepted.length;
   }
 
   canCancel(trip: Trip): boolean {
@@ -107,17 +104,15 @@ export class TripDisplay implements OnInit {
       return;
     }
 
-    const now = new Date();
-
-    if (new Date(trip.startDate) < now) {
+    if (new Date(trip.startDate) < new Date()) {
       this.notificationService.show('Trip already started', 'error');
       return;
     }
 
-    this.applicationService.createApplication(
-      trip.id,
-      this.authService.currentUser()?.email || 'anonymous'
-    );
+    const email = this.authService.currentUser()?.email;
+    if (!email) return;
+
+    this.applicationService.createApplication(trip.id, email);
   }
 
   cancelTrip(trip: Trip, event?: Event) {
@@ -129,42 +124,17 @@ export class TripDisplay implements OnInit {
   editTrip(trip: Trip, event?: Event) {
     event?.stopPropagation();
     event?.preventDefault();
-
     this.router.navigate(['/manager/edit-trip', trip.id]);
   }
 
   reactivateTrip(trip: Trip, event?: Event) {
     event?.stopPropagation();
-
     this.tripService.reactivateTrip(trip);
   }
 
-  addToFavourites(trip: Trip, event?: Event) {
-    event?.stopPropagation();
-    event?.preventDefault();
-
-    const email = this.authService.currentUser()?.email;
-    if (!email) {
-      this.notificationService.show('You must be logged in as explorer', 'error');
-      return;
-    }
-
-    this.favouriteService.load(email);
-
-    const lists = this.favouriteService.favouriteLists();
-
-    if (lists.length === 0) {
-      this.notificationService.show('Create a favourite list first', 'error');
-      return;
-    }
-
-    // MVP: añade a la primera lista
-    this.favouriteService.addTripToList(email, lists[0].id, trip.id);
-    this.notificationService.show('Trip added to favourites', 'success');
-  }
 
   isFavourite(tripId: string): boolean {
-    return this.favouriteService.isTripInAnyList(tripId);
+    return this.favouriteService.isFavourite(tripId);
   }
 
   openFavouriteSelector(tripId: string, event?: Event) {
@@ -177,85 +147,15 @@ export class TripDisplay implements OnInit {
   }
 
   confirmAddToFavourites(tripId: string, listId: string) {
-
     const email = this.authService.currentUser()?.email;
     if (!email) return;
 
-    this.favouriteService.addTripToList(email, listId, tripId);
+    this.favouriteService.addTripToList(listId, tripId, email);
 
     this.selectedTripForFav.set(null);
-
     this.notificationService.show('Added to favourites', 'success');
   }
 
-  hasApplied(tripId: string): boolean {
-
-    const email = this.authService.currentUser()?.email;
-
-    return this.applicationService.applications().some(app =>
-      app.tripId === tripId &&
-      app.explorerId === email &&
-      app.status !== 'REJECTED'
-    );
-  }
-
-  canApply(trip: any): boolean {
-
-    const user = this.authService.currentUser();
-
-    if (!user) return false;
-
-    if (trip.cancelled) return false;
-
-    if (new Date(trip.startDate) < new Date()) return false;
-
-    const alreadyApplied = this.applicationService.applications()
-      .some(app =>
-        app.tripId === trip.id &&
-        app.explorerId === user.email
-      );
-
-    return !alreadyApplied;
-  }
-
-  getCountdown(startDate: string | Date): string {
-
-    const now = new Date();
-    const start = new Date(startDate);
-
-    const diff = start.getTime() - now.getTime();
-
-    if (diff <= 0) return 'Started';
-
-    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-
-    return `Starts in ${days} day${days > 1 ? 's' : ''}`;
-  }
-
-  getTripBadges(trip: any): string[] {
-
-    const badges: string[] = [];
-
-    // FULL
-    if (trip.maxParticipants <= 0) {
-      badges.push('FULL');
-    }
-
-    // CANCELLED
-    if (trip.cancelled) {
-      badges.push('CANCELLED');
-    }
-
-    // COMING SOON (empieza en menos de 3 días)
-    const diff = new Date(trip.startDate).getTime() - new Date().getTime();
-    const days = diff / (1000 * 60 * 60 * 24);
-
-    if (days > 0 && days <= 3) {
-      badges.push('COMING SOON');
-    }
-
-    return badges;
-  }
 
   getApplication(tripId: string) {
     const user = this.authService.currentUser();
@@ -272,11 +172,58 @@ export class TripDisplay implements OnInit {
     return app ? app.status : null;
   }
 
-  goToPaymentFromTrip(trip: any, event: Event) {
+  canApply(trip: Trip): boolean {
+    const user = this.authService.currentUser();
+    if (!user) return false;
+
+    if (trip.cancelled) return false;
+    if (new Date(trip.startDate) < new Date()) return false;
+
+    return !this.applicationService.applications().some(app =>
+      app.tripId === trip.id &&
+      app.explorerId === user.email
+    );
+  }
+
+
+  getCountdown(startDate: string | Date): string {
+    const now = new Date();
+    const start = new Date(startDate);
+    const diff = start.getTime() - now.getTime();
+
+    if (diff <= 0) return 'Started';
+
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    return `Starts in ${days} day${days > 1 ? 's' : ''}`;
+  }
+
+
+  getTripBadges(trip: Trip): string[] {
+    const badges: string[] = [];
+
+    if (trip.maxParticipants <= 0) {
+      badges.push('FULL');
+    }
+
+    if (trip.cancelled) {
+      badges.push('CANCELLED');
+    }
+
+    const diff = new Date(trip.startDate).getTime() - new Date().getTime();
+    const days = diff / (1000 * 60 * 60 * 24);
+
+    if (days > 0 && days <= 3) {
+      badges.push('COMING SOON');
+    }
+
+    return badges;
+  }
+
+
+  goToPaymentFromTrip(trip: Trip, event: Event) {
     event.stopPropagation();
 
     const app = this.getApplication(trip.id);
-
     if (!app) return;
 
     this.router.navigate(['/payment', app.id, trip.price]);

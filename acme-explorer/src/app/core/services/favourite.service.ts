@@ -1,78 +1,75 @@
 import { Injectable, signal } from '@angular/core';
-import { FavouriteList } from '../../features/trips/models/favourite-list.model';
+import { HttpClient } from '@angular/common/http';
+import { FavouriteList } from '../../shared/models/favourite-list.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavouriteService {
 
-  private storageKey(email: string) {
-    return `favourites_${email}`;
-  }
+  private apiUrl = 'http://localhost:3000/favouriteLists';
 
   favouriteLists = signal<FavouriteList[]>([]);
 
-  load(email: string) {
-    const raw = localStorage.getItem(this.storageKey(email));
-    const data: FavouriteList[] = raw ? JSON.parse(raw) : [];
-    this.favouriteLists.set(data);
+  constructor(private http: HttpClient) {}
+
+  loadLists(email: string) {
+    this.http.get<FavouriteList[]>(`${this.apiUrl}?explorerId=${email}`)
+      .subscribe(data => {
+        this.favouriteLists.set(data);
+      });
   }
 
-  save(email: string) {
-    localStorage.setItem(
-      this.storageKey(email),
-      JSON.stringify(this.favouriteLists())
-    );
-  }
+  createList(name: string, email: string) {
 
-  createList(email: string, name: string) {
     const newList: FavouriteList = {
       id: Date.now().toString(),
       name,
+      explorerId: email,
       tripIds: []
     };
 
-    this.favouriteLists.set([...this.favouriteLists(), newList]);
-    this.save(email);
+    this.http.post(this.apiUrl, newList)
+      .subscribe(() => this.loadLists(email));
   }
 
-  deleteList(email: string, listId: string) {
-    this.favouriteLists.set(
-      this.favouriteLists().filter(list => list.id !== listId)
-    );
-    this.save(email);
+  addTripToList(listId: string, tripId: string, email: string) {
+
+    const list = this.favouriteLists().find(l => l.id === listId);
+    if (!list) return;
+
+    if (list.tripIds.includes(tripId)) return;
+
+    const updated: FavouriteList = {
+      ...list,
+      tripIds: [...list.tripIds, tripId]
+    };
+
+    this.http.put(`${this.apiUrl}/${listId}`, updated)
+      .subscribe(() => this.loadLists(email));
   }
 
-  addTripToList(email: string, listId: string, tripId: string) {
-    const updated = this.favouriteLists().map(list => {
-      if (list.id !== listId) return list;
-      if (list.tripIds.includes(tripId)) return list;
+  removeTripFromList(listId: string, tripId: string, email: string) {
 
-      return {
-        ...list,
-        tripIds: [...list.tripIds, tripId]
-      };
-    });
+    const list = this.favouriteLists().find(l => l.id === listId);
+    if (!list) return;
 
-    this.favouriteLists.set(updated);
-    this.save(email);
+    const updated: FavouriteList = {
+      ...list,
+      tripIds: list.tripIds.filter((id: string) => id !== tripId)
+    };
+
+    this.http.put(`${this.apiUrl}/${listId}`, updated)
+      .subscribe(() => this.loadLists(email));
   }
 
-  removeTripFromList(email: string, listId: string, tripId: string) {
-    const updated = this.favouriteLists().map(list => {
-      if (list.id !== listId) return list;
-
-      return {
-        ...list,
-        tripIds: list.tripIds.filter(id => id !== tripId)
-      };
-    });
-
-    this.favouriteLists.set(updated);
-    this.save(email);
+  isFavourite(tripId: string): boolean {
+    return this.favouriteLists()
+      .some(list => list.tripIds.includes(tripId));
   }
 
-  isTripInAnyList(tripId: string): boolean {
-    return this.favouriteLists().some(list => list.tripIds.includes(tripId));
+  deleteList(listId: string, email: string) {
+    this.http.delete(`http://localhost:3000/favouriteLists/${listId}`)
+      .subscribe(() => this.loadLists(email));
   }
 }
