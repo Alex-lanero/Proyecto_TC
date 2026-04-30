@@ -134,16 +134,33 @@ export class CreateTripComponent implements OnInit{
 
   createTrip() {
 
-      if (!this.isFormValid()) {
-        this.notificationService.show('Please fill all required fields', 'error');
-        return;
-      }
+    // ❌ VALIDACIÓN FECHAS
+    if (new Date(this.endDate()) < new Date(this.startDate())) {
+      this.notificationService.show('End date must be after start date', 'error');
+      return;
+    }
+
+    // ❌ VALIDACIÓN PRECIOS
+    if (this.stages().some(s => s.price < 0)) {
+      this.notificationService.show('Stage price cannot be negative', 'error');
+      return;
+    }
+
+    // ❌ VALIDACIÓN FORM
+    if (!this.isFormValid()) {
+      this.notificationService.show('Please fill all required fields', 'error');
+      return;
+    }
+
+    const existingTrip = this.tripService.trips()
+      .find(t => t.id === this.editingTripId);
 
     const trip: Trip = {
       id: this.isEditMode() ? this.editingTripId! : Date.now().toString(),
       version: 1,
-      ticker: this.isEditMode() ? this.tripService.trips()
-        .find(t => t.id === this.editingTripId)?.ticker || this.generateTicker()
+
+      ticker: this.isEditMode()
+        ? existingTrip?.ticker || this.generateTicker()
         : this.generateTicker(),
 
       title: this.title(),
@@ -167,7 +184,10 @@ export class CreateTripComponent implements OnInit{
 
       pictures: this.pictures() ? [this.pictures()] : [],
 
-      cancelled: false // 🔥 REACTIVA SI EDITAS
+      // 🔥 CLAVE
+      cancelled: this.isEditMode()
+        ? existingTrip?.cancelled || false
+        : false
     };
 
     if (this.isEditMode()) {

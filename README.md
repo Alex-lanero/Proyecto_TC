@@ -21,7 +21,7 @@ Visualización de estado de aplicaciones:
 ✅ Accepted
 ❌ Rejected
 Visualización de viajes aceptados
-Gestión de listas de favoritos
+Gestión de listas de favoritos (persistidas en backend)
 
 Credenciales:
 
@@ -35,7 +35,7 @@ Reactivación de viajes cancelados
 Gestión de aplicaciones:
 Aceptar (PENDING → DUE)
 Rechazar
-Visualización de aplicaciones (tabla)
+Visualización de aplicaciones en formato tabla
 Solo puede gestionar sus propios viajes
 
 Credenciales:
@@ -67,46 +67,46 @@ Edición completa de viajes
 Cancelación con restricciones:
 ❌ No permitido si faltan menos de 7 días
 Reactivación de viajes cancelados
-Validación completa del formulario (no se permiten trips vacíos)
+Validación completa del formulario:
+❌ Fechas inválidas
+❌ Precios negativos
+❌ Formulario vacío
 📄 Gestión de Applications
-
-Estados del sistema:
-
+Estados:
 PENDING
 DUE
 ACCEPTED
 REJECTED
 CANCELLED
-
 Flujo:
-
 Explorer aplica → PENDING
 Manager acepta → DUE
 Explorer paga → ACCEPTED
 💳 Payment (PayPal Sandbox)
-Integración real con PayPal mediante ngx-paypal
+Integración con ngx-paypal
 Uso de cuentas sandbox
-Flujo completo:
+Funcionalidades:
 Loader durante pago
-Gestión de éxito / error / cancelación
-Protección contra doble pago
-Cambio automático de estado a ACCEPTED
-Compatible con SSR (renderizado solo en navegador)
+Pantalla de éxito / error / cancelación
+Protección contra doble click
+Cambio automático a ACCEPTED
+Compatible con SSR (solo ejecuta en navegador)
 ⭐ Favoritos (Explorer)
 Creación de listas de favoritos
-Añadir viajes a listas específicas
-Eliminación de viajes de listas
-Persistencia en localStorage
-Selección dinámica de lista
-⚙️ Reglas de negocio implementadas
+Añadir viajes a listas
+Eliminar viajes de listas
+Eliminar listas completas
+Persistencia en JSON Server (backend)
+Filtrado por usuario (explorerId)
+⚙️ Reglas de negocio
 ❌ No aplicar a viajes cancelados
 ❌ No aplicar a viajes ya iniciados
-❌ No aplicar más de una vez al mismo viaje
+❌ No aplicar más de una vez
 ❌ No cancelar viajes con menos de 7 días
-✔ Manager solo gestiona sus propios viajes
-✔ Explorer solo ve viajes activos
+✔ Manager solo gestiona sus trips
+✔ Explorer solo ve trips activos
 ✔ Validación estricta en creación/edición
-✔ Control completo de estados de application en UI
+✔ Control de estados en UI
 🔍 Búsqueda y filtros
 Filtro por dificultad
 Búsqueda por:
@@ -117,36 +117,53 @@ país
 ticker
 🎨 UI / UX
 Diseño responsive
-Cards interactivas (click en toda la tarjeta)
-Estados dinámicos de aplicación (botones inteligentes)
+Cards clicables completas
+Estados dinámicos de aplicación
 Badges visuales
-Countdown hasta inicio del viaje
+Countdown de inicio
 Loader en pagos
 Notificaciones en pantalla (sin alert)
 Header dinámico por rol
-Colores por dificultad:
+Colores:
 🟢 Easy
 🟠 Medium
 🔴 Hard
-🛡️ Guards y navegación
-Implementación de canDeactivate
-Evita pérdida de datos en formularios
+🛡️ Guards y seguridad
+canDeactivate para formularios
 Persistencia de sesión con localStorage
-Protección frente a SSR (PayPal + localStorage)
+Protección SSR (localStorage + PayPal)
 🧪 Testing
-Testing con Vitest
-Test unitario del componente TripDisplay
-Cobertura:
-Renderizado
-Aplicación a viajes
-Filtros
-Estados
+🔹 Unit Testing (Vitest)
+
+Cobertura implementada:
+
+CreateTripComponent:
+✔ Crear trip válido
+✔ Validar fechas inválidas
+✔ Validar precios negativos
+TripDisplayComponent:
+✔ Renderizado
+✔ Filtros
+✔ Aplicación a viajes
+✔ Estados de aplicación
+🔹 E2E Testing (Cypress)
+
+Caso implementado:
+
+Navegación completa:
+Login simulado
+Búsqueda de viajes
+Acceso a detalle
+Aplicación a viaje
+
+✔ Test robusto independiente del estado de la DB
+✔ Limpieza automática de applications antes de ejecutar
+
 🧱 Arquitectura
 Angular Standalone Components
-Signals para estado reactivo
+Signals (estado reactivo)
 Servicios desacoplados
 Guards de navegación
-Estructura modular:
 src/app/
   core/
     services/
@@ -166,9 +183,21 @@ src/app/
 Simulado con JSON Server:
 
 npx json-server --watch db.json --port 3000
+🧪 Reset de datos (tests)
+
+Para evitar conflictos en tests E2E:
+
+Limpieza de applications antes de test
+Opcional: restauración de db.json
 📦 Instalación
 npm install
 npm start
+🧪 Ejecutar tests
+# Unit tests
+npx vitest
+
+# E2E tests
+npx cypress open
 🧠 Modelo de dominio
 
 Relaciones:
@@ -176,18 +205,20 @@ Relaciones:
 Un Manager → múltiples Trips
 Un Trip → múltiples Applications
 Un Explorer → múltiples Applications
+Un Explorer → múltiples FavouriteLists
 📌 Estado del proyecto
 
 ✔ Aplicación completamente funcional
 ✔ Roles correctamente implementados
 ✔ CRUD completo de trips
 ✔ Gestión completa de applications
-✔ Sistema de favoritos
+✔ Sistema de favoritos en backend
 ✔ Integración PayPal
-✔ Validaciones y reglas de negocio
+✔ Validaciones completas
 ✔ Guards y persistencia
 ✔ UI/UX avanzada
-✔ Testing básico
+✔ Unit testing completo
+✔ E2E testing implementado
 
 🏁 Autor
 

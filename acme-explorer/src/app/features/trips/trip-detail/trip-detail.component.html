@@ -20,18 +20,54 @@
 
     <h2>Stages</h2>
 
-    <!-- 🔥 ACCORDION SIMPLE -->
     @for (stage of trip()?.stages; track stage.id) {
-
       <details class="stage">
-
         <summary>
           {{ stage.title }} — {{ stage.price }} €
         </summary>
-
         <p>{{ stage.description }}</p>
-
       </details>
+    }
+
+    <!-- 🔥 ACTIONS -->
+    @if (authService.isExplorer() && !trip()?.cancelled) {
+
+      <div class="trip-actions">
+
+        <!-- NO APPLICATION -->
+        @if (!getApplication(trip()!.id)) {
+
+          @if (canApply(trip()!)) {
+            <button class="trip-button" (click)="applyToTrip(trip()!)">
+              Apply
+            </button>
+          }
+
+        }
+
+        <!-- PENDING -->
+        @if (getApplicationStatus(trip()!.id) === 'PENDING') {
+          <span class="applied-tag pending">🟡 Pending</span>
+        }
+
+        <!-- DUE -->
+        @if (getApplicationStatus(trip()!.id) === 'DUE') {
+          <button class="trip-button pay" (click)="goToPayment(trip()!)">
+            💳 Pay now
+          </button>
+        }
+
+        <!-- ACCEPTED -->
+        @if (getApplicationStatus(trip()!.id) === 'ACCEPTED') {
+          <span class="applied-tag accepted">✅ Accepted</span>
+        }
+
+        <!-- REJECTED -->
+        @if (getApplicationStatus(trip()!.id) === 'REJECTED') {
+          <span class="applied-tag rejected">❌ Rejected</span>
+        }
+
+      </div>
 
     }
 

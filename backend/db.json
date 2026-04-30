@@ -85,39 +85,12 @@
   ],
   "applications": [
     {
-      "id": "1775496340491",
-      "version": 1,
-      "tripId": "2",
-      "explorerId": "a",
-      "moment": "2026-04-06T17:25:40.491Z",
-      "status": "ACCEPTED",
-      "comments": ""
-    },
-    {
-      "id": "1775498205157",
+      "id": "1777558923464",
       "version": 1,
       "tripId": "2",
       "explorerId": "explorer@test.com",
-      "moment": "2026-04-06T17:56:45.157Z",
-      "status": "REJECTED",
-      "comments": ""
-    },
-    {
-      "id": "1775573994335",
-      "version": 1,
-      "tripId": "1",
-      "explorerId": "explorer@test.com",
-      "moment": "2026-04-07T14:59:54.335Z",
-      "status": "ACCEPTED",
-      "comments": ""
-    },
-    {
-      "id": "1776183949786",
-      "version": 1,
-      "tripId": "1775499730232",
-      "explorerId": "explorer@test.com",
-      "moment": "2026-04-14T16:25:49.786Z",
-      "status": "ACCEPTED",
+      "moment": "2026-04-30T14:22:03.464Z",
+      "status": "PENDING",
       "comments": ""
     }
   ],

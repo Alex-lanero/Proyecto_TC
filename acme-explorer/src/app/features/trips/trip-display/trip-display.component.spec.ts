@@ -110,4 +110,33 @@ describe('TripDisplayComponent', () => {
     expect(trips.length).toBe(0);
   });
 
+  // ✅ d) APPLY VALID
+  it('should apply to valid trip', () => {
+
+    const trip = {
+      id: '1',
+      cancelled: false,
+      startDate: new Date('2030-01-01')
+    } as any;
+
+    component.applyToTrip(trip);
+
+    expect(mockApplicationService.createApplication).toHaveBeenCalled();
+  });
+
+
+  // ❌ e) APPLY INVALID (past trip)
+  it('should NOT apply to past trip', () => {
+
+    const trip = {
+      id: '1',
+      cancelled: false,
+      startDate: new Date('2020-01-01')
+    } as any;
+
+    component.applyToTrip(trip);
+
+    expect(mockApplicationService.createApplication).not.toHaveBeenCalled();
+  });
+
 });
